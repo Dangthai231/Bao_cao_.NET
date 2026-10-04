@@ -1,0 +1,40 @@
+# ==========================================
+# 1. Thư mục Build và Biên dịch (BẮT BUỘC)
+# ==========================================
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+
+# ==========================================
+# 2. File tạm của Visual Studio / VS Code / Trae
+# ==========================================
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# ==========================================
+# 3. File Log, Cache và Test
+# ==========================================
+*.log
+*.cache
+TestResults/
+
+# ==========================================
+# 4. File hệ điều hành sinh ra (Mac/Windows)
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==========================================
+# 5. File cấu hình nhạy cảm (Tùy chọn)
+# ==========================================
+# Bỏ dấu # ở dòng dưới nếu bạn không muốn đẩy file chứa mật khẩu/chuỗi kết nối DB thật lên mạng
+# appsettings.Development.json
