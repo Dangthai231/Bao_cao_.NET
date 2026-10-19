@@ -37,4 +37,4 @@ Thumbs.db
 # 5. File cấu hình nhạy cảm (Tùy chọn)
 # ==========================================
 # Bỏ dấu # ở dòng dưới nếu bạn không muốn đẩy file chứa mật khẩu/chuỗi kết nối DB thật lên mạng
-# appsettings.Development.json
+appsettings.Development.json
