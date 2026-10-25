@@ -33,7 +33,6 @@ namespace EventManager.UI.Forms.Canbo
             btnLogout = new Button();
             btnNotifications = new Button();
             btnParticipants = new Button();
-            btnTasks = new Button();
             btnDocuments = new Button();
             btnReports = new Button();
             btnHome = new Button();
@@ -48,7 +47,6 @@ namespace EventManager.UI.Forms.Canbo
             pnlSidebar.Controls.Add(btnLogout);
             pnlSidebar.Controls.Add(btnNotifications);
             pnlSidebar.Controls.Add(btnParticipants);
-            pnlSidebar.Controls.Add(btnTasks);
             pnlSidebar.Controls.Add(btnDocuments);
             pnlSidebar.Controls.Add(btnReports);
             pnlSidebar.Controls.Add(btnHome);
@@ -80,7 +78,7 @@ namespace EventManager.UI.Forms.Canbo
             // 
             // btnNotifications
             // 
-            btnNotifications.Location = new Point(3, 193);
+            btnNotifications.Location = new Point(3, 164);
             btnNotifications.Name = "btnNotifications";
             btnNotifications.Size = new Size(158, 23);
             btnNotifications.TabIndex = 5;
@@ -90,23 +88,13 @@ namespace EventManager.UI.Forms.Canbo
             // 
             // btnParticipants
             // 
-            btnParticipants.Location = new Point(3, 164);
+            btnParticipants.Location = new Point(3, 135);
             btnParticipants.Name = "btnParticipants";
             btnParticipants.Size = new Size(158, 23);
             btnParticipants.TabIndex = 4;
             btnParticipants.Text = "Quản lý người tham gia";
             btnParticipants.UseVisualStyleBackColor = true;
             btnParticipants.Click += btnParticipants_Click;
-            // 
-            // btnTasks
-            // 
-            btnTasks.Location = new Point(3, 135);
-            btnTasks.Name = "btnTasks";
-            btnTasks.Size = new Size(158, 23);
-            btnTasks.TabIndex = 3;
-            btnTasks.Text = "Quản lý công việc";
-            btnTasks.UseVisualStyleBackColor = true;
-            btnTasks.Click += btnTasks_Click;
             // 
             // btnDocuments
             // 
@@ -166,7 +154,6 @@ namespace EventManager.UI.Forms.Canbo
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Button btnNotifications;
         private System.Windows.Forms.Button btnParticipants;
-        private System.Windows.Forms.Button btnTasks;
         private System.Windows.Forms.Button btnDocuments;
         private System.Windows.Forms.Button btnReports;
         private System.Windows.Forms.Button btnHome;

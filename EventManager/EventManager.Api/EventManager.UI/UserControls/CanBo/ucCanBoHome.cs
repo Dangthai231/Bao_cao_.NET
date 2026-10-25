@@ -38,7 +38,7 @@ namespace EventManager.UI.UserControls
         private async void ucCanBoHome_Load(object sender, EventArgs e)
         {
             // Cập nhật ngày hiện tại vào dòng thông báo chân trang
-            lblBannerText.Text = $"Ngày {DateTime.Now:dd/MM/yyyy} - Hãy kiểm tra danh sách công việc và cập nhật tiến độ hàng ngày.";
+            lblBannerText.Text = $"Ngày {DateTime.Now:dd/MM/yyyy} - Chúc bạn một ngày làm việc hiệu quả và quản lý sự kiện thành công!";
 
             try
             {
@@ -57,7 +57,7 @@ namespace EventManager.UI.UserControls
             }
             catch
             {
-                // Giữ lại số liệu mẫu mặc định (3, 12, 248, 36, 18, 7) nếu Backend chưa sẵn sàng
+                // Giữ lại số liệu mặc định nếu Backend chưa sẵn sàng
             }
         }
     }

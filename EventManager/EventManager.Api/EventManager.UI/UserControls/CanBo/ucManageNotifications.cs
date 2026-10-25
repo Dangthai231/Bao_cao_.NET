@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EventManager.UI.UserControls.CanBo
@@ -13,7 +15,8 @@ namespace EventManager.UI.UserControls.CanBo
     public partial class ucManageNotifications : UserControl
     {
         private readonly ApiService _apiService;
-        private List<NotificationDto> _allNotifications; // Lưu tạm danh sách để tìm kiếm
+        private List<NotificationDto> _allNotifications = new List<NotificationDto>(); // Lưu tạm danh sách để tìm kiếm
+
         public ucManageNotifications()
         {
             InitializeComponent();
@@ -44,6 +47,7 @@ namespace EventManager.UI.UserControls.CanBo
 
             lblSystemMessage.Location = new Point(padding, this.ClientSize.Height - 25);
         }
+
         // --- 1. SỰ KIỆN LOAD: Tải dữ liệu khi mở form ---
         private async void ucQuanLyThongBao_Load(object sender, EventArgs e)
         {
@@ -57,26 +61,38 @@ namespace EventManager.UI.UserControls.CanBo
             await LoadDataAsync();
             lblSystemMessage.Text = ""; // Xóa dòng chữ thông báo mặc định
         }
+
         private async Task LoadDataAsync()
         {
-            _allNotifications = await _apiService.GetNotificationsAsync();
-            dgvNotifications.DataSource = _allNotifications;
+            try
+            {
+                _allNotifications = await _apiService.GetNotificationsAsync();
+                dgvNotifications.DataSource = null;
+                dgvNotifications.DataSource = _allNotifications;
+            }
+            catch (Exception ex)
+            {
+                ShowSystemMessage("Lỗi tải danh sách thông báo: " + ex.Message, true);
+            }
         }
 
         private void dgvNotifications_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && dgvNotifications.CurrentRow != null)
             {
-                var selectedNotif = (NotificationDto)dgvNotifications.CurrentRow.DataBoundItem;
+                if (dgvNotifications.CurrentRow.DataBoundItem is NotificationDto selectedNotif)
+                {
+                    txtNotificationTitle.Text = selectedNotif.Title;
+                    richTextBox1.Text = selectedNotif.Content;
+                    cboTargetAudience.SelectedItem = selectedNotif.TargetAudience;
+                    cboTargetAudience.Text = selectedNotif.TargetAudience;
+                    dtpSendDate.Value = selectedNotif.SendDate != default ? selectedNotif.SendDate : DateTime.Now;
+                    cboStatus.SelectedItem = selectedNotif.Status;
+                    cboStatus.Text = selectedNotif.Status;
 
-                txtNotificationTitle.Text = selectedNotif.Title;
-                richTextBox1.Text = selectedNotif.Content;
-                cboTargetAudience.SelectedItem = selectedNotif.TargetAudience;
-                dtpSendDate.Value = selectedNotif.SendDate;
-                cboStatus.SelectedItem = selectedNotif.Status;
-
-                // Lưu tạm Mã vào Tag của nút Cập nhật để dùng sau
-                btnUpdateNotification.Tag = selectedNotif.NotificationCode;
+                    // Lưu tạm Mã vào Tag của nút Cập nhật để dùng sau
+                    btnUpdateNotification.Tag = selectedNotif.NotificationCode;
+                }
             }
         }
 
@@ -85,7 +101,9 @@ namespace EventManager.UI.UserControls.CanBo
             txtNotificationTitle.Clear();
             richTextBox1.Clear();
             cboTargetAudience.SelectedIndex = -1;
+            cboTargetAudience.Text = "";
             cboStatus.SelectedIndex = -1;
+            cboStatus.Text = "";
             dtpSendDate.Value = DateTime.Now;
             btnUpdateNotification.Tag = null; // Xóa Mã tạm
 
@@ -97,30 +115,37 @@ namespace EventManager.UI.UserControls.CanBo
         {
             if (string.IsNullOrWhiteSpace(txtNotificationTitle.Text))
             {
-                MessageBox.Show("Vui lòng nhập tiêu đề!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập tiêu đề thông báo!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             var newNotif = new NotificationDto
             {
-                // Để BE tự sinh Mã (NotificationCode)
+                NotificationCode = string.Empty, // Để BE tự sinh Mã TBxxx
                 Title = txtNotificationTitle.Text.Trim(),
                 Content = richTextBox1.Text.Trim(),
-                TargetAudience = cboTargetAudience.Text,
+                TargetAudience = string.IsNullOrWhiteSpace(cboTargetAudience.Text) ? "Tất cả người tham gia" : cboTargetAudience.Text,
                 SendDate = dtpSendDate.Value,
-                Status = cboStatus.Text
+                Status = string.IsNullOrWhiteSpace(cboStatus.Text) ? "Đã gửi" : cboStatus.Text
             };
 
-            bool isSuccess = await _apiService.CreateNotificationAsync(newNotif);
-            if (isSuccess)
+            try
             {
-                ShowSystemMessage("Tạo thông báo thành công!");
-                btnResetForm_Click(sender, e);
-                await LoadDataAsync();
+                bool isSuccess = await _apiService.CreateNotificationAsync(newNotif);
+                if (isSuccess)
+                {
+                    ShowSystemMessage("Tạo thông báo thành công!");
+                    btnResetForm_Click(sender, e);
+                    await LoadDataAsync();
+                }
+                else
+                {
+                    ShowSystemMessage("Tạo thông báo thất bại!", true);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ShowSystemMessage("Tạo thông báo thất bại!", true);
+                ShowSystemMessage("Lỗi kết nối máy chủ: " + ex.Message, true);
             }
         }
 
@@ -132,25 +157,38 @@ namespace EventManager.UI.UserControls.CanBo
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(txtNotificationTitle.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tiêu đề thông báo!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var updatedNotif = new NotificationDto
             {
-                NotificationCode = btnUpdateNotification.Tag.ToString(),
+                NotificationCode = btnUpdateNotification.Tag.ToString() ?? string.Empty,
                 Title = txtNotificationTitle.Text.Trim(),
                 Content = richTextBox1.Text.Trim(),
-                TargetAudience = cboTargetAudience.Text,
+                TargetAudience = string.IsNullOrWhiteSpace(cboTargetAudience.Text) ? "Tất cả người tham gia" : cboTargetAudience.Text,
                 SendDate = dtpSendDate.Value,
-                Status = cboStatus.Text
+                Status = string.IsNullOrWhiteSpace(cboStatus.Text) ? "Đã gửi" : cboStatus.Text
             };
 
-            bool isSuccess = await _apiService.UpdateNotificationAsync(updatedNotif);
-            if (isSuccess)
+            try
             {
-                ShowSystemMessage("Cập nhật thông báo thành công!");
-                await LoadDataAsync();
+                bool isSuccess = await _apiService.UpdateNotificationAsync(updatedNotif);
+                if (isSuccess)
+                {
+                    ShowSystemMessage("Cập nhật thông báo thành công!");
+                    await LoadDataAsync();
+                }
+                else
+                {
+                    ShowSystemMessage("Cập nhật thất bại!", true);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ShowSystemMessage("Cập nhật thất bại!");
+                ShowSystemMessage("Lỗi kết nối: " + ex.Message, true);
             }
         }
 
@@ -162,24 +200,30 @@ namespace EventManager.UI.UserControls.CanBo
                 return;
             }
 
-            string code = btnUpdateNotification.Tag.ToString();
+            string code = btnUpdateNotification.Tag.ToString() ?? string.Empty;
             DialogResult result = MessageBox.Show($"Bạn có chắc muốn xóa thông báo {code}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
-                bool isDeleted = await _apiService.DeleteNotificationAsync(code);
-                if (isDeleted)
+                try
                 {
-                    ShowSystemMessage("Xóa thông báo thành công!");
-                    btnResetForm_Click(sender, e);
-                    await LoadDataAsync();
+                    bool isDeleted = await _apiService.DeleteNotificationAsync(code);
+                    if (isDeleted)
+                    {
+                        ShowSystemMessage($"Đã xóa thành công thông báo: {code}!");
+                        btnResetForm_Click(sender, e);
+                        await LoadDataAsync();
+                    }
+                    else
+                    {
+                        ShowSystemMessage("Xóa thất bại!", true);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ShowSystemMessage("Xóa thất bại!", true);
+                    ShowSystemMessage("Lỗi kết nối: " + ex.Message, true);
                 }
             }
-
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -188,6 +232,7 @@ namespace EventManager.UI.UserControls.CanBo
 
             if (string.IsNullOrEmpty(keyword))
             {
+                dgvNotifications.DataSource = null;
                 dgvNotifications.DataSource = _allNotifications;
             }
             else
@@ -198,6 +243,7 @@ namespace EventManager.UI.UserControls.CanBo
                     (n.NotificationCode != null && n.NotificationCode.ToLower().Contains(keyword))
                 ).ToList();
 
+                dgvNotifications.DataSource = null;
                 dgvNotifications.DataSource = filtered;
             }
         }

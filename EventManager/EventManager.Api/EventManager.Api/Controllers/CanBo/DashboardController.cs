@@ -1,10 +1,10 @@
-﻿using EventManager.Api.Data;
+using EventManager.Api.Data;
 using EventManager.Api.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 namespace EventManager.Api.Controllers.CanBo
 {
-
     [Route("api/canbo/dashboard")]
     [ApiController]
     public class DashboardController : ControllerBase
@@ -21,9 +21,8 @@ namespace EventManager.Api.Controllers.CanBo
         {
             var summary = new DashboardSummaryDto
             {
-                
-                ActiveEvents = await _context.Events.CountAsync(),
-                PendingTasks = await _context.Tasks.CountAsync(t => t.Status == "Pending"),
+                ActiveEvents = await _context.Events.CountAsync(e => e.Status == "Ongoing"),
+                PendingTasks = await _context.Events.CountAsync(e => e.Status == "Completed"),
                 TotalParticipants = await _context.Participants.CountAsync(),
                 EventDocuments = await _context.Documents.CountAsync(),
                 SentNotifications = await _context.Notifications.CountAsync(),
@@ -33,5 +32,4 @@ namespace EventManager.Api.Controllers.CanBo
             return Ok(summary);
         }
     }
-
 }
