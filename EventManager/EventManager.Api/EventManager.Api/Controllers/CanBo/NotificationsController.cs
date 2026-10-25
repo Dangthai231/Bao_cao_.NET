@@ -52,43 +52,59 @@ namespace EventManager.Api.Controllers.CanBo
                 return BadRequest(new { message = "Tiêu đề thông báo không được để trống!" });
             }
 
-            // Tự động sinh mã NotificationCode nếu chưa có (TB001, TB002, ...)
-            string code = request.NotificationCode;
-            if (string.IsNullOrWhiteSpace(code))
+            try
             {
-                int maxNum = 0;
-                var existingCodes = await _context.Notifications
-                    .Select(n => n.NotificationCode)
-                    .Where(c => c != null && c.StartsWith("TB"))
-                    .ToListAsync();
-
-                foreach (var c in existingCodes)
+                // Tự động sinh mã NotificationCode nếu chưa có (TB001, TB002, ...)
+                string code = request.NotificationCode ?? string.Empty;
+                if (string.IsNullOrWhiteSpace(code))
                 {
-                    if (c != null && c.Length > 2 && int.TryParse(c.Substring(2), out int num))
+                    int maxNum = 0;
+                    var existingCodes = await _context.Notifications
+                        .Select(n => n.NotificationCode)
+                        .Where(c => c != null && c.StartsWith("TB"))
+                        .ToListAsync();
+
+                    foreach (var c in existingCodes)
                     {
-                        if (num > maxNum) maxNum = num;
+                        if (c != null && c.Length > 2 && int.TryParse(c.Substring(2), out int num))
+                        {
+                            if (num > maxNum) maxNum = num;
+                        }
                     }
+
+                    var maxId = await _context.Notifications.AnyAsync()
+                        ? await _context.Notifications.MaxAsync(n => n.Id)
+                        : 0;
+                    if (maxId > maxNum) maxNum = maxId;
+
+                    code = $"TB{(maxNum + 1):D3}";
                 }
-                code = $"TB{(maxNum + 1):D3}";
+
+                var contentText = request.Content ?? string.Empty;
+                var messageText = string.IsNullOrWhiteSpace(contentText) ? request.Title : contentText;
+
+                var newNotification = new Notification
+                {
+                    NotificationCode = code,
+                    Title = request.Title.Trim(),
+                    Content = contentText,
+                    Message = messageText,
+                    TargetAudience = string.IsNullOrWhiteSpace(request.TargetAudience) ? "Tất cả người tham gia" : request.TargetAudience,
+                    SendDate = request.SendDate != default ? request.SendDate : DateTime.Now,
+                    Status = string.IsNullOrWhiteSpace(request.Status) ? "Đã gửi" : request.Status,
+                    SentAt = request.SendDate != default ? request.SendDate : DateTime.Now,
+                    CreatedById = 2
+                };
+
+                _context.Notifications.Add(newNotification);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Tạo thông báo thành công!", notificationCode = code });
             }
-
-            var newNotification = new Notification
+            catch (Exception ex)
             {
-                NotificationCode = code,
-                Title = request.Title,
-                Content = request.Content,
-                Message = request.Content ?? request.Title,
-                TargetAudience = string.IsNullOrWhiteSpace(request.TargetAudience) ? "Tất cả người tham gia" : request.TargetAudience,
-                SendDate = request.SendDate != default ? request.SendDate : DateTime.Now,
-                Status = string.IsNullOrWhiteSpace(request.Status) ? "Đã gửi" : request.Status,
-                SentAt = request.SendDate != default ? request.SendDate : DateTime.Now,
-                CreatedById = 2
-            };
-
-            _context.Notifications.Add(newNotification);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Tạo thông báo thành công!", notificationCode = code });
+                return StatusCode(500, new { message = "Lỗi khi lưu thông báo: " + ex.Message });
+            }
         }
 
         // 3. PUT: api/canbo/notifications/{code} - Cập nhật thông báo
@@ -100,31 +116,41 @@ namespace EventManager.Api.Controllers.CanBo
                 return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
             }
 
-            var notif = await _context.Notifications
-                .FirstOrDefaultAsync(n => n.NotificationCode == code);
-
-            // Thử tìm theo ID nếu code có dạng TB001
-            if (notif == null && code.StartsWith("TB") && int.TryParse(code.Substring(2), out int parsedId))
+            try
             {
-                notif = await _context.Notifications.FindAsync(parsedId);
-            }
+                var notif = await _context.Notifications
+                    .FirstOrDefaultAsync(n => n.NotificationCode == code);
 
-            if (notif == null)
+                // Thử tìm theo ID nếu code có dạng TB001
+                if (notif == null && code.StartsWith("TB") && int.TryParse(code.Substring(2), out int parsedId))
+                {
+                    notif = await _context.Notifications.FindAsync(parsedId);
+                }
+
+                if (notif == null)
+                {
+                    return NotFound(new { message = $"Không tìm thấy thông báo có mã {code}!" });
+                }
+
+                var contentText = request.Content ?? string.Empty;
+                var messageText = string.IsNullOrWhiteSpace(contentText) ? request.Title : contentText;
+
+                notif.Title = request.Title;
+                notif.Content = contentText;
+                notif.Message = messageText;
+                notif.TargetAudience = string.IsNullOrWhiteSpace(request.TargetAudience) ? "Tất cả người tham gia" : request.TargetAudience;
+                notif.SendDate = request.SendDate != default ? request.SendDate : DateTime.Now;
+                notif.Status = string.IsNullOrWhiteSpace(request.Status) ? "Đã gửi" : request.Status;
+                notif.SentAt = notif.SendDate;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Cập nhật thông báo thành công!" });
+            }
+            catch (Exception ex)
             {
-                return NotFound(new { message = $"Không tìm thấy thông báo có mã {code}!" });
+                return StatusCode(500, new { message = "Lỗi khi cập nhật thông báo: " + ex.Message });
             }
-
-            notif.Title = request.Title;
-            notif.Content = request.Content;
-            notif.Message = request.Content ?? request.Title;
-            notif.TargetAudience = request.TargetAudience;
-            notif.SendDate = request.SendDate != default ? request.SendDate : DateTime.Now;
-            notif.Status = request.Status;
-            notif.SentAt = notif.SendDate;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Cập nhật thông báo thành công!" });
         }
 
         // 4. DELETE: api/canbo/notifications/{code} - Xóa thông báo
@@ -136,24 +162,31 @@ namespace EventManager.Api.Controllers.CanBo
                 return BadRequest(new { message = "Mã thông báo không hợp lệ!" });
             }
 
-            var notif = await _context.Notifications
-                .FirstOrDefaultAsync(n => n.NotificationCode == code);
-
-            // Thử tìm theo ID nếu code có dạng TB001
-            if (notif == null && code.StartsWith("TB") && int.TryParse(code.Substring(2), out int parsedId))
+            try
             {
-                notif = await _context.Notifications.FindAsync(parsedId);
-            }
+                var notif = await _context.Notifications
+                    .FirstOrDefaultAsync(n => n.NotificationCode == code);
 
-            if (notif == null)
+                // Thử tìm theo ID nếu code có dạng TB001
+                if (notif == null && code.StartsWith("TB") && int.TryParse(code.Substring(2), out int parsedId))
+                {
+                    notif = await _context.Notifications.FindAsync(parsedId);
+                }
+
+                if (notif == null)
+                {
+                    return NotFound(new { message = $"Không tìm thấy thông báo có mã {code}!" });
+                }
+
+                _context.Notifications.Remove(notif);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = $"Đã xóa thành công thông báo: {code}" });
+            }
+            catch (Exception ex)
             {
-                return NotFound(new { message = $"Không tìm thấy thông báo có mã {code}!" });
+                return StatusCode(500, new { message = "Lỗi khi xóa thông báo: " + ex.Message });
             }
-
-            _context.Notifications.Remove(notif);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = $"Đã xóa thành công thông báo: {code}" });
         }
     }
 }

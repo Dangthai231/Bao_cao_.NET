@@ -2,6 +2,7 @@ using EventManager.UI.Models;
 using EventManager.UI.UserControls;
 using EventManager.UI.UserControls.CanBo;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace EventManager.UI.Forms.Canbo
@@ -43,7 +44,6 @@ namespace EventManager.UI.Forms.Canbo
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-         
             LoadUserControl(new ucCanBoHome());
         }
 
@@ -64,11 +64,6 @@ namespace EventManager.UI.Forms.Canbo
             {
                 this.Close(); // Đóng Dashboard → LoginForm sẽ đóng theo (do FormClosed event)
             }
-        }
-
-        private void btnTasks_Click(object sender, EventArgs e)
-        {
-            LoadUserControl(new ucManageTasks());
         }
 
         private void btnDocuments_Click(object sender, EventArgs e)

@@ -82,7 +82,7 @@ namespace EventManager.UI.UserControls
             lblHeader.Name = "lblHeader";
             lblHeader.Size = new Size(292, 38);
             lblHeader.TabIndex = 0;
-            lblHeader.Text = "Tổng quan công việc";
+            lblHeader.Text = "Tổng quan sự kiện";
             // 
             // pnlBottom
             // 
@@ -113,7 +113,7 @@ namespace EventManager.UI.UserControls
             lblBannerText.Name = "lblBannerText";
             lblBannerText.Size = new Size(543, 19);
             lblBannerText.TabIndex = 0;
-            lblBannerText.Text = "Ngày 19/10/2026 - Hãy kiểm tra danh sách công việc và cập nhật tiến độ hàng ngày.";
+            lblBannerText.Text = "Chào mừng đến với hệ thống quản lý sự kiện!";
             // 
             // tableLayoutPanel1
             // 
@@ -299,7 +299,7 @@ namespace EventManager.UI.UserControls
             label3.Name = "label3";
             label3.Size = new Size(135, 19);
             label3.TabIndex = 1;
-            label3.Text = "Công việc đang xử lý";
+            label3.Text = "Sự kiện đã hoàn thành";
             // 
             // lblPendingTasks
             // 
