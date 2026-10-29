@@ -19,5 +19,14 @@ namespace EventManager.Api.Models
         public DateTime? EndDate { get; set; }
 
         public int CreatedById { get; set; }
+
+        // Thông tin hiển thị cho sinh viên khi tra cứu / xem chi tiết sự kiện
+        public string? Description { get; set; }
+        public string? Location { get; set; }
+
+        /// <summary>
+        /// Số lượng tối đa được đăng ký. 0 = không giới hạn
+        /// </summary>
+        public int MaxParticipants { get; set; } = 0;
     }
 }
