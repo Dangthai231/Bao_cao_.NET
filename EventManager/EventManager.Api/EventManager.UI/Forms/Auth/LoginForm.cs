@@ -1,5 +1,6 @@
 using EventManager.UI.Services;
 using EventManager.UI.Forms.Canbo;
+using EventManager.UI.Forms.SinhVien;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -69,7 +70,7 @@ namespace EventManager.UI.Forms.Auth
                     }
                     else if (session.Role == "HocSinh")
                     {
-                        // mainForm = new HocSinhDashboard(session);
+                        mainForm = new SinhVienDashboard(session);
                     }
 
                     if (mainForm != null)
