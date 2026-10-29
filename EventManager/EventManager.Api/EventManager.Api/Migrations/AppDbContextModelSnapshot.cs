@@ -64,7 +64,7 @@ namespace EventManager.Api.Migrations
                             FileName = "chuong_trinh.pdf",
                             FileSize = "",
                             FileType = "",
-                            UploadDate = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(7427),
+                            UploadDate = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(2510),
                             UploadedBy = ""
                         });
                 });
@@ -80,8 +80,17 @@ namespace EventManager.Api.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("MaxParticipants")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
@@ -103,6 +112,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 1,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Hội thảo T1"
@@ -111,6 +121,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 2,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Sự kiện T2"
@@ -119,6 +130,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 3,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Hội nghị T3"
@@ -127,6 +139,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 4,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Cancelled",
                             Title = "Workshop T4"
@@ -135,6 +148,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 5,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 5, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Triển lãm T5"
@@ -143,6 +157,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 6,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Tập huấn T6"
@@ -151,6 +166,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 7,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 7, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Hội thi T7"
@@ -159,6 +175,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 8,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Completed",
                             Title = "Giao lưu T8"
@@ -167,6 +184,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 9,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 9, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Cancelled",
                             Title = "Hội thảo T9"
@@ -175,6 +193,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 10,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Ongoing",
                             Title = "Sự kiện T10"
@@ -183,6 +202,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 11,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Ongoing",
                             Title = "Sự kiện T10b"
@@ -191,10 +211,75 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 12,
                             CreatedById = 2,
+                            MaxParticipants = 0,
                             StartDate = new DateTime(2026, 10, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Ongoing",
                             Title = "Sự kiện T10c"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedById = 2,
+                            Description = "Hội thảo chia sẻ về ứng dụng trí tuệ nhân tạo trong chuyển đổi số dành cho sinh viên khoa CNTT.",
+                            EndDate = new DateTime(2026, 11, 20, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            Location = "Hội trường A - ĐH Điện lực",
+                            MaxParticipants = 200,
+                            StartDate = new DateTime(2026, 11, 20, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Ongoing",
+                            Title = "Hội thảo AI & Chuyển đổi số"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedById = 2,
+                            Description = "Giải bóng đá giao hữu giữa các chi đoàn thuộc Liên Chi đoàn Công nghệ thông tin.",
+                            EndDate = new DateTime(2026, 12, 12, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            Location = "Sân bóng ĐH Điện lực",
+                            MaxParticipants = 120,
+                            StartDate = new DateTime(2026, 12, 5, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Ongoing",
+                            Title = "Giải bóng đá Liên Chi đoàn CNTT"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedById = 2,
+                            Description = "Quyên góp áo ấm, sách vở và tổ chức các hoạt động tình nguyện cho trẻ em vùng cao.",
+                            EndDate = new DateTime(2026, 12, 20, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            Location = "Sân trường ĐH Điện lực",
+                            MaxParticipants = 0,
+                            StartDate = new DateTime(2026, 12, 20, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Ongoing",
+                            Title = "Ngày hội Tình nguyện mùa đông"
                         });
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.EventFeedback", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventFeedbacks");
                 });
 
             modelBuilder.Entity("EventManager.Api.Models.EventTask", b =>
@@ -227,7 +312,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(6188),
+                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(1372),
                             EventId = 10,
                             Status = "Pending",
                             Title = "Chuẩn bị tài liệu"
@@ -235,7 +320,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(6918),
+                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(2053),
                             EventId = 10,
                             Status = "Completed",
                             Title = "Gửi thư mời"
@@ -250,6 +335,9 @@ namespace EventManager.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Content")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
@@ -257,8 +345,23 @@ namespace EventManager.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("NotificationCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TargetAudience")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -268,9 +371,15 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
+                            Content = "",
                             CreatedById = 2,
                             Message = "Nhắc nhở sự kiện T10",
-                            SentAt = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(8387)
+                            NotificationCode = "",
+                            SendDate = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(3645),
+                            SentAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(3647),
+                            Status = "",
+                            TargetAudience = "",
+                            Title = ""
                         });
                 });
 
@@ -282,8 +391,17 @@ namespace EventManager.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AttendanceStatus")
+                        .HasColumnType("longtext");
+
                     b.Property<bool>("Attended")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ConfirmationStatus")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
@@ -292,8 +410,20 @@ namespace EventManager.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ParticipantCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("RegisteredAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -303,82 +433,157 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 1,
                             FullName = "Nguyễn A",
-                            RegisteredAt = new DateTime(2026, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 2,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 1,
                             FullName = "Trần B",
-                            RegisteredAt = new DateTime(2026, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 3,
+                            AttendanceStatus = "",
                             Attended = false,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 2,
                             FullName = "Lê C",
-                            RegisteredAt = new DateTime(2026, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 4,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 3,
                             FullName = "Phạm D",
-                            RegisteredAt = new DateTime(2026, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 5,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 3,
                             FullName = "Hoàng E",
-                            RegisteredAt = new DateTime(2026, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 6,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 5,
                             FullName = "Ngô F",
-                            RegisteredAt = new DateTime(2026, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 7,
+                            AttendanceStatus = "",
                             Attended = false,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 6,
                             FullName = "Đặng G",
-                            RegisteredAt = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 8,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 7,
                             FullName = "Vũ H",
-                            RegisteredAt = new DateTime(2026, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 9,
+                            AttendanceStatus = "",
                             Attended = true,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 8,
                             FullName = "Bùi I",
-                            RegisteredAt = new DateTime(2026, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 8, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
                         },
                         new
                         {
                             Id = 10,
+                            AttendanceStatus = "",
                             Attended = false,
+                            ConfirmationStatus = "",
+                            Email = "",
                             EventId = 10,
                             FullName = "Dương J",
-                            RegisteredAt = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            ParticipantCode = "",
+                            PhoneNumber = "",
+                            RegisteredAt = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = ""
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AttendanceStatus = "Đã điểm danh",
+                            Attended = true,
+                            ConfirmationStatus = "Đã xác nhận",
+                            Email = "hocsinh01@epu.edu.vn",
+                            EventId = 8,
+                            FullName = "Nguyễn Văn Sinh",
+                            ParticipantCode = "",
+                            PhoneNumber = "0912345678",
+                            RegisteredAt = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "Sinh viên",
+                            UserId = 3
                         });
                 });
 
@@ -446,21 +651,21 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(9314),
+                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(4784),
                             IsCompleted = true,
                             Title = "Báo cáo Q1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(9841),
+                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(5229),
                             IsCompleted = true,
                             Title = "Báo cáo Q2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 10, 19, 22, 31, 42, 858, DateTimeKind.Local).AddTicks(9843),
+                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(5231),
                             IsCompleted = false,
                             Title = "Báo cáo Q3"
                         });
@@ -474,12 +679,30 @@ namespace EventManager.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ClassName")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Role")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StudentCode")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Username")
@@ -494,23 +717,29 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            Password = "123",
+                            Password = "admin123",
                             Role = "Admin",
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            Password = "123",
+                            Password = "canbo123",
                             Role = "CanBo",
-                            Username = "canbo1"
+                            Username = "canbo01"
                         },
                         new
                         {
                             Id = 3,
-                            Password = "123",
+                            ClassName = "D17CNPM1",
+                            DateOfBirth = new DateTime(2004, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "hocsinh01@epu.edu.vn",
+                            FullName = "Nguyễn Văn Sinh",
+                            Password = "hs123",
+                            PhoneNumber = "0912345678",
                             Role = "HocSinh",
-                            Username = "hocsinh1"
+                            StudentCode = "22810310001",
+                            Username = "hocsinh01"
                         });
                 });
 #pragma warning restore 612, 618

@@ -13,6 +13,11 @@ namespace EventManager.Api.Models
         public int EventId { get; set; } = 1;
 
         /// <summary>
+        /// Tài khoản sinh viên đã tự đăng ký (null = do cán bộ thêm thủ công)
+        /// </summary>
+        public int? UserId { get; set; }
+
+        /// <summary>
         /// true = đã tham dự thực tế
         /// </summary>
         public bool Attended { get; set; } = false;

@@ -32,8 +32,10 @@ namespace EventManager.Api.Controllers.Auth
             // 3. Nếu đúng -> Tạo thông tin trả về
             var response = new LoginResponse
             {
+                UserId = user.Id,
                 Username = user.Username,
                 Role = user.Role,
+                FullName = user.FullName,
             };
 
             return Ok(response); // Trả về HTTP 200 kèm dữ liệu JSON
