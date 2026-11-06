@@ -17,7 +17,7 @@ namespace EventManager.UI.UserControls.CanBo
         public ucQuanLyNguoiThamGia()
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
 
             // Gắn sự kiện cho các nút
             this.Load += ucQuanLyNguoiThamGia_Load;

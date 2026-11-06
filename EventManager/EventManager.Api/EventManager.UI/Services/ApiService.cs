@@ -9,12 +9,25 @@ namespace EventManager.UI.Services
 {
     public class ApiService
     {
+        // ── Singleton: toàn bộ app dùng chung 1 HttpClient + 1 token ──
+        private static ApiService _instance;
+        public static ApiService Instance => _instance ??= new ApiService();
+
         private readonly HttpClient _httpClient;
 
-        public ApiService()
+        private ApiService()
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new System.Uri("http://localhost:7112/");
+        }
+
+        /// <summary>
+        /// Gọi sau khi login thành công để đính JWT vào mọi request tiếp theo.
+        /// </summary>
+        public void SetToken(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
 
         public async Task<UserSession> LoginAsync(string username, string password)
@@ -22,13 +35,34 @@ namespace EventManager.UI.Services
             var loginRequest = new { Username = username, Password = password };
             var response = await _httpClient.PostAsJsonAsync("api/auth/login", loginRequest);
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            // Đọc LoginResponse (có Token)
+            var loginResp = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            if (loginResp == null) return null;
+
+            // Đính token ngay vào HttpClient để mọi request sau tự có header
+            SetToken(loginResp.Token);
+
+            return new UserSession
             {
-                // Nếu API trả về OK, đọc lấy Username và Role
-                return await response.Content.ReadFromJsonAsync<UserSession>();
-            }
-            
-            return null; // Đăng nhập thất bại
+                UserId   = loginResp.UserId,
+                Username = loginResp.Username,
+                Role     = loginResp.Role,
+                FullName = loginResp.FullName,
+                Token    = loginResp.Token,
+            };
+        }
+
+        // DTO nội bộ để deserialize response login
+        private class LoginResponse
+        {
+            public int UserId { get; set; }
+            public string Username { get; set; }
+            public string Role { get; set; }
+            public string FullName { get; set; }
+            public string Token { get; set; }
         }
 
         public async Task<DashboardSummaryDto> GetDashboardSummaryAsync()
@@ -43,7 +77,7 @@ namespace EventManager.UI.Services
         /// Lấy dữ liệu thống kê để vẽ biểu đồ.
         /// fromDate / toDate có thể null (BE mặc định năm hiện tại).
         /// </summary>
-        public async Task<ReportDataDto> GetReportStatisticsAsync(DateTime? fromDate, DateTime? toDate)
+        public async Task<(ReportDataDto Data, string Error)> GetReportStatisticsAsync(DateTime? fromDate, DateTime? toDate)
         {
             var query = "api/canbo/reports/statistics";
             var parts = new List<string>();
@@ -56,10 +90,19 @@ namespace EventManager.UI.Services
             if (parts.Count > 0)
                 query += "?" + string.Join("&", parts);
 
-            var response = await _httpClient.GetAsync(query);
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<ReportDataDto>();
-            return null;
+            try
+            {
+                var response = await _httpClient.GetAsync(query);
+                if (response.IsSuccessStatusCode)
+                    return (await response.Content.ReadFromJsonAsync<ReportDataDto>(), null);
+
+                var body = await response.Content.ReadAsStringAsync();
+                return (null, $"HTTP {(int)response.StatusCode}: {body}");
+            }
+            catch (Exception ex)
+            {
+                return (null, $"Không kết nối được API: {ex.Message}");
+            }
         }
 
         // ==========================================

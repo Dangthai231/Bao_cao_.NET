@@ -20,7 +20,7 @@ namespace EventManager.UI.UserControls.CanBo
         public ucManageNotifications()
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
             dgvNotifications.AutoGenerateColumns = false;
             this.Load += ucQuanLyThongBao_Load;
             this.Resize += ucManageNotifications_Resize;

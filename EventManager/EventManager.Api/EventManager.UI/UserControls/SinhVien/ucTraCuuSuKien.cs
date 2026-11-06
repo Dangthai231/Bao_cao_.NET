@@ -21,7 +21,7 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucTraCuuSuKien(UserSession session)
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
             _session = session;
 
             // Mặc định lọc từ hôm nay đến 3 tháng sau

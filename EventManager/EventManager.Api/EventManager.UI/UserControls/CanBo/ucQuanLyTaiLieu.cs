@@ -14,7 +14,7 @@ namespace EventManager.UI.UserControls
     public partial class ucQuanLyTaiLieu : UserControl
     {
         private UserSession _session;
-        private readonly ApiService _apiService = new ApiService();
+        private readonly ApiService _apiService = ApiService.Instance;
         public ucQuanLyTaiLieu()
         {
             InitializeComponent();

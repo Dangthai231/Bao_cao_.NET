@@ -12,7 +12,7 @@ namespace EventManager.UI.UserControls
         public ucCanBoHome()
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
 
             // Gán sự kiện vẽ viền tinh tế cho các thẻ số liệu và banner
             panel1.Paint += Card_Paint;

@@ -64,7 +64,7 @@ namespace EventManager.Api.Migrations
                             FileName = "chuong_trinh.pdf",
                             FileSize = "",
                             FileType = "",
-                            UploadDate = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(5416),
+                            UploadDate = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(1486),
                             UploadedBy = ""
                         });
                 });
@@ -312,7 +312,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(4120),
+                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(232),
                             EventId = 10,
                             Status = "Pending",
                             Title = "Chuẩn bị tài liệu"
@@ -320,7 +320,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(4856),
+                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(967),
                             EventId = 10,
                             Status = "Completed",
                             Title = "Gửi thư mời"
@@ -375,8 +375,8 @@ namespace EventManager.Api.Migrations
                             CreatedById = 2,
                             Message = "Nhắc nhở sự kiện T10",
                             NotificationCode = "",
-                            SendDate = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(6689),
-                            SentAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(6691),
+                            SendDate = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(2812),
+                            SentAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(2815),
                             Status = "",
                             TargetAudience = "",
                             Title = ""
@@ -651,21 +651,21 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(7678),
+                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(3923),
                             IsCompleted = true,
                             Title = "Báo cáo Q1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(8214),
+                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(4454),
                             IsCompleted = true,
                             Title = "Báo cáo Q2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(8215),
+                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(4456),
                             IsCompleted = false,
                             Title = "Báo cáo Q3"
                         });

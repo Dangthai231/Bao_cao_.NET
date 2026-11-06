@@ -18,7 +18,7 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucThongTinCaNhan(UserSession session)
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
             _session = session;
 
             this.Load += async (s, e) => await LoadProfileAsync();
