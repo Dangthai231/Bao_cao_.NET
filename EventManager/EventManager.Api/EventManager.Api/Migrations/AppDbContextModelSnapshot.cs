@@ -64,7 +64,7 @@ namespace EventManager.Api.Migrations
                             FileName = "chuong_trinh.pdf",
                             FileSize = "",
                             FileType = "",
-                            UploadDate = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(2510),
+                            UploadDate = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(5416),
                             UploadedBy = ""
                         });
                 });
@@ -312,7 +312,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(1372),
+                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(4120),
                             EventId = 10,
                             Status = "Pending",
                             Title = "Chuẩn bị tài liệu"
@@ -320,7 +320,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(2053),
+                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(4856),
                             EventId = 10,
                             Status = "Completed",
                             Title = "Gửi thư mời"
@@ -375,8 +375,8 @@ namespace EventManager.Api.Migrations
                             CreatedById = 2,
                             Message = "Nhắc nhở sự kiện T10",
                             NotificationCode = "",
-                            SendDate = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(3645),
-                            SentAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(3647),
+                            SendDate = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(6689),
+                            SentAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(6691),
                             Status = "",
                             TargetAudience = "",
                             Title = ""
@@ -651,21 +651,21 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(4784),
+                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(7678),
                             IsCompleted = true,
                             Title = "Báo cáo Q1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(5229),
+                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(8214),
                             IsCompleted = true,
                             Title = "Báo cáo Q2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 10, 28, 16, 33, 32, 705, DateTimeKind.Local).AddTicks(5231),
+                            CreatedAt = new DateTime(2026, 11, 6, 21, 11, 43, 969, DateTimeKind.Local).AddTicks(8215),
                             IsCompleted = false,
                             Title = "Báo cáo Q3"
                         });
@@ -695,6 +695,10 @@ namespace EventManager.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
@@ -717,14 +721,18 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            Password = "admin123",
+                            FullName = "Quản trị viên",
+                            Password = "",
+                            PasswordHash = "$2a$12$eduBLLdVXrxDMfKaRm9h3.tYCVdg4v5TuGXe4JFLVqUTwqjJLFrGi",
                             Role = "Admin",
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            Password = "canbo123",
+                            FullName = "Cán Bộ Nguyễn Thị Lan",
+                            Password = "",
+                            PasswordHash = "$2a$12$UBMCNRsLXqdHnfG3oZH5oek3h6rJAR2RMIzU0E5VyNNklOWFMUMWa",
                             Role = "CanBo",
                             Username = "canbo01"
                         },
@@ -735,9 +743,10 @@ namespace EventManager.Api.Migrations
                             DateOfBirth = new DateTime(2004, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "hocsinh01@epu.edu.vn",
                             FullName = "Nguyễn Văn Sinh",
-                            Password = "hs123",
+                            Password = "",
+                            PasswordHash = "$2a$12$9YmX4vRU5fPAkyqNTLcAuuBR3EqH7UGDopbqyVu.G.KKL7YlAooxK",
                             PhoneNumber = "0912345678",
-                            Role = "HocSinh",
+                            Role = "SinhVien",
                             StudentCode = "22810310001",
                             Username = "hocsinh01"
                         });

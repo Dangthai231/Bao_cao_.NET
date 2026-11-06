@@ -60,15 +60,19 @@ namespace EventManager.UI.Forms.Auth
                 {
                     Form mainForm = null;
 
-                    if (session.Role == "Admin")
+                    if (string.Equals(session.Role, "Admin", StringComparison.OrdinalIgnoreCase))
                     {
                         // mainForm = new AdminDashboard(session);
                     }
-                    else if (session.Role == "CanBo")
+                    else if (string.Equals(session.Role, "CanBo", StringComparison.OrdinalIgnoreCase) || 
+                             string.Equals(session.Role, "CAN_BO", StringComparison.OrdinalIgnoreCase))
                     {
                         mainForm = new CanBoDashboard(session);
                     }
-                    else if (session.Role == "HocSinh")
+                    else if (string.Equals(session.Role, "HocSinh", StringComparison.OrdinalIgnoreCase) || 
+                             string.Equals(session.Role, "HOC_SINH", StringComparison.OrdinalIgnoreCase) || 
+                             string.Equals(session.Role, "SINH_VIEN", StringComparison.OrdinalIgnoreCase) ||
+                             string.Equals(session.Role, "SinhVien", StringComparison.OrdinalIgnoreCase))
                     {
                         mainForm = new SinhVienDashboard(session);
                     }
@@ -78,6 +82,10 @@ namespace EventManager.UI.Forms.Auth
                         this.Hide();
                         mainForm.FormClosed += (s, args) => this.Close();
                         mainForm.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Vai trò '{session.Role}' hiện chưa được cấu hình giao diện!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 else
