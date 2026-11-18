@@ -19,6 +19,17 @@ namespace EventManager.UI.UserControls.CanBo
             InitializeComponent();
             _apiService = ApiService.Instance;
 
+            dataGridView1.BackgroundColor = Color.White;
+            dataGridView1.BorderStyle = BorderStyle.None;
+            dataGridView1.GridColor = Color.FromArgb(241, 245, 249);
+            dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.EnableHeadersVisualStyles = false;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(71, 85, 105);
+            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
+            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.FromArgb(29, 78, 216);
+
             // Gắn sự kiện cho các nút
             this.Load += ucQuanLyNguoiThamGia_Load;
             btnSearch.Click += btnSearch_Click;

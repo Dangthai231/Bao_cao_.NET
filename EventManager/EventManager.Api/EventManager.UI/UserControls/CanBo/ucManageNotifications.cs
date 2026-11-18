@@ -22,6 +22,17 @@ namespace EventManager.UI.UserControls.CanBo
             InitializeComponent();
             _apiService = ApiService.Instance;
             dgvNotifications.AutoGenerateColumns = false;
+            dgvNotifications.BackgroundColor = Color.White;
+            dgvNotifications.BorderStyle = BorderStyle.None;
+            dgvNotifications.GridColor = Color.FromArgb(241, 245, 249);
+            dgvNotifications.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvNotifications.RowHeadersVisible = false;
+            dgvNotifications.EnableHeadersVisualStyles = false;
+            dgvNotifications.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+            dgvNotifications.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(71, 85, 105);
+            dgvNotifications.DefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
+            dgvNotifications.DefaultCellStyle.SelectionForeColor = Color.FromArgb(29, 78, 216);
+
             this.Load += ucQuanLyThongBao_Load;
             this.Resize += ucManageNotifications_Resize;
         }
@@ -131,7 +142,7 @@ namespace EventManager.UI.UserControls.CanBo
 
             try
             {
-                bool isSuccess = await _apiService.CreateNotificationAsync(newNotif);
+                var (isSuccess, message) = await _apiService.CreateNotificationAsync(newNotif);
                 if (isSuccess)
                 {
                     ShowSystemMessage("Tạo thông báo thành công!");
@@ -140,7 +151,7 @@ namespace EventManager.UI.UserControls.CanBo
                 }
                 else
                 {
-                    ShowSystemMessage("Tạo thông báo thất bại!", true);
+                    ShowSystemMessage("Tạo thông báo thất bại! " + message, true);
                 }
             }
             catch (Exception ex)
@@ -175,7 +186,7 @@ namespace EventManager.UI.UserControls.CanBo
 
             try
             {
-                bool isSuccess = await _apiService.UpdateNotificationAsync(updatedNotif);
+                var (isSuccess, message) = await _apiService.UpdateNotificationAsync(updatedNotif);
                 if (isSuccess)
                 {
                     ShowSystemMessage("Cập nhật thông báo thành công!");
@@ -183,7 +194,7 @@ namespace EventManager.UI.UserControls.CanBo
                 }
                 else
                 {
-                    ShowSystemMessage("Cập nhật thất bại!", true);
+                    ShowSystemMessage("Cập nhật thất bại! " + message, true);
                 }
             }
             catch (Exception ex)
@@ -207,7 +218,7 @@ namespace EventManager.UI.UserControls.CanBo
             {
                 try
                 {
-                    bool isDeleted = await _apiService.DeleteNotificationAsync(code);
+                    var (isDeleted, message) = await _apiService.DeleteNotificationAsync(code);
                     if (isDeleted)
                     {
                         ShowSystemMessage($"Đã xóa thành công thông báo: {code}!");
@@ -216,7 +227,7 @@ namespace EventManager.UI.UserControls.CanBo
                     }
                     else
                     {
-                        ShowSystemMessage("Xóa thất bại!", true);
+                        ShowSystemMessage("Xóa thất bại! " + message, true);
                     }
                 }
                 catch (Exception ex)

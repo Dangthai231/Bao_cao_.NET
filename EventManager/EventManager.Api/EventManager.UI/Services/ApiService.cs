@@ -141,22 +141,46 @@ namespace EventManager.UI.Services
             return new List<NotificationDto>();
         }
 
-        public async Task<bool> CreateNotificationAsync(NotificationDto notification)
+        public async Task<(bool Success, string Message)> CreateNotificationAsync(NotificationDto notification)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/canbo/notifications", notification);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/canbo/notifications", notification);
+                string msg = await ReadMessageAsync(response);
+                return (response.IsSuccessStatusCode, msg);
+            }
+            catch (Exception ex)
+            {
+                return (false, "Lỗi kết nối: " + ex.Message);
+            }
         }
 
-        public async Task<bool> UpdateNotificationAsync(NotificationDto notification)
+        public async Task<(bool Success, string Message)> UpdateNotificationAsync(NotificationDto notification)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/canbo/notifications/{notification.NotificationCode}", notification);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"api/canbo/notifications/{notification.NotificationCode}", notification);
+                string msg = await ReadMessageAsync(response);
+                return (response.IsSuccessStatusCode, msg);
+            }
+            catch (Exception ex)
+            {
+                return (false, "Lỗi kết nối: " + ex.Message);
+            }
         }
 
-        public async Task<bool> DeleteNotificationAsync(string notificationCode)
+        public async Task<(bool Success, string Message)> DeleteNotificationAsync(string notificationCode)
         {
-            var response = await _httpClient.DeleteAsync($"api/canbo/notifications/{notificationCode}");
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"api/canbo/notifications/{notificationCode}");
+                string msg = await ReadMessageAsync(response);
+                return (response.IsSuccessStatusCode, msg);
+            }
+            catch (Exception ex)
+            {
+                return (false, "Lỗi kết nối: " + ex.Message);
+            }
         }
 
         // ==========================================
@@ -274,6 +298,151 @@ namespace EventManager.UI.Services
         {
             var response = await _httpClient.PutAsJsonAsync($"api/sinhvien/profile/{userId}", request);
             return (response.IsSuccessStatusCode, await ReadMessageAsync(response));
+        }
+
+        // ── Quản lý công việc (Tasks) ──────────────────────────────
+        public async Task<List<TaskItemDto>> GetTasksAsync(string search = null, string trangThai = null, long? suKienId = null)
+        {
+            try
+            {
+                var queryParams = new List<string>();
+                if (!string.IsNullOrWhiteSpace(search))
+                    queryParams.Add($"search={Uri.EscapeDataString(search)}");
+                if (!string.IsNullOrWhiteSpace(trangThai))
+                    queryParams.Add($"trangThai={Uri.EscapeDataString(trangThai)}");
+                if (suKienId.HasValue && suKienId.Value > 0)
+                    queryParams.Add($"suKienId={suKienId.Value}");
+
+                string url = "api/canbo/tasks" + (queryParams.Count > 0 ? "?" + string.Join("&", queryParams) : "");
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<TaskItemDto>>() ?? new List<TaskItemDto>();
+                }
+            }
+            catch { }
+            return new List<TaskItemDto>();
+        }
+
+        public async Task<TaskSummaryDto> GetTaskSummaryAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/canbo/tasks/summary");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TaskSummaryDto>();
+                }
+            }
+            catch { }
+            return new TaskSummaryDto();
+        }
+
+        public async Task<List<TaskEventOptionDto>> GetTaskEventsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/canbo/tasks/events");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<TaskEventOptionDto>>() ?? new List<TaskEventOptionDto>();
+                }
+            }
+            catch { }
+            return new List<TaskEventOptionDto>();
+        }
+
+        public async Task<List<TaskUserOptionDto>> GetTaskUsersAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/canbo/tasks/users");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<TaskUserOptionDto>>() ?? new List<TaskUserOptionDto>();
+                }
+            }
+            catch { }
+            return new List<TaskUserOptionDto>();
+        }
+
+        public async Task<TaskItemDto> GetTaskByIdAsync(long id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/canbo/tasks/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<TaskItemDto>();
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        public async Task<(bool Success, string Message)> CreateTaskAsync(CreateTaskDto dto)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/canbo/tasks", dto);
+                return (response.IsSuccessStatusCode, await ReadMessageAsync(response));
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+        }
+
+        public async Task<(bool Success, string Message)> UpdateTaskAsync(long id, UpdateTaskDto dto)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"api/canbo/tasks/{id}", dto);
+                return (response.IsSuccessStatusCode, await ReadMessageAsync(response));
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+        }
+
+        public async Task<(bool Success, string Message)> AssignTaskAsync(long id, string nhanSu)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"api/canbo/tasks/{id}/assign", new AssignTaskDto { NhanSu = nhanSu });
+                return (response.IsSuccessStatusCode, await ReadMessageAsync(response));
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+        }
+
+        public async Task<(bool Success, string Message)> CompleteTaskAsync(long id)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsync($"api/canbo/tasks/{id}/complete", null);
+                return (response.IsSuccessStatusCode, await ReadMessageAsync(response));
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+        }
+
+        public async Task<(bool Success, string Message)> DeleteTaskAsync(long id)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"api/canbo/tasks/{id}");
+                return (response.IsSuccessStatusCode, await ReadMessageAsync(response));
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
         }
 
         /// <summary>
