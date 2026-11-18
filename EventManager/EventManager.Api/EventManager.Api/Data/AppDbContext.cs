@@ -16,6 +16,9 @@ namespace EventManager.Api.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Report>      Reports      { get; set; }
         public DbSet<EventFeedback> EventFeedbacks { get; set; }
+        public DbSet<CongViec>    CongViecs    { get; set; }
+        public DbSet<SuKien>      SuKiens      { get; set; }
+        public DbSet<TaiKhoan>    TaiKhoans    { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

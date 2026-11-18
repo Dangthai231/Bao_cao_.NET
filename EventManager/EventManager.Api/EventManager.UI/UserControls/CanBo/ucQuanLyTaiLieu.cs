@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,7 +16,8 @@ namespace EventManager.UI.UserControls
     public partial class ucQuanLyTaiLieu : UserControl
     {
         private UserSession _session;
-        private readonly ApiService _apiService = new ApiService();
+        private readonly ApiService _apiService = ApiService.Instance;
+
         public ucQuanLyTaiLieu()
         {
             InitializeComponent();
@@ -28,8 +31,38 @@ namespace EventManager.UI.UserControls
             dgvDocuments.Columns[3].DataPropertyName = "UploadDate";
             dgvDocuments.Columns[4].DataPropertyName = "UploadedBy";
 
+            pnlTableCard.Paint += (s, e) =>
+            {
+                using var pen = new Pen(Color.FromArgb(226, 232, 240), 1);
+                e.Graphics.DrawRectangle(pen, 0, 0, pnlTableCard.Width - 1, pnlTableCard.Height - 1);
+            };
+
+            ApplyButtonRounded(btnUpload, 6);
+            ApplyButtonRounded(btnExport, 6);
+            ApplyButtonRounded(btnDelete, 6);
+
             this.Load += ucManageDocuments_Load;
         }
+
+        private void ApplyButtonRounded(Button btn, int radius)
+        {
+            void update()
+            {
+                if (btn.Width <= 0 || btn.Height <= 0) return;
+                using var path = new GraphicsPath();
+                int d = radius * 2;
+                path.AddArc(0, 0, d, d, 180, 90);
+                path.AddArc(btn.Width - d, 0, d, d, 270, 90);
+                path.AddArc(btn.Width - d, btn.Height - d, d, d, 0, 90);
+                path.AddArc(0, btn.Height - d, d, d, 90, 90);
+                path.CloseFigure();
+                btn.Region?.Dispose();
+                btn.Region = new Region(path);
+            }
+            update();
+            btn.SizeChanged += (s, e) => update();
+        }
+
         // Tạo sự kiện Load cho UserControl (Nhấp đúp chuột vào nền giao diện để tự sinh ra hàm này)
         private async void ucManageDocuments_Load(object sender, EventArgs e)
         {

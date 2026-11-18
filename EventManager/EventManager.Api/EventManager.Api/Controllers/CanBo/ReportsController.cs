@@ -36,7 +36,10 @@ namespace EventManager.Api.Controllers.CanBo
             var eventsQuery = _context.Events
                 .Where(e => e.StartDate >= from && e.StartDate <= to);
 
-            var allEvents = await eventsQuery.ToListAsync();
+            // Chỉ SELECT các cột cần thiết để tránh lỗi khi DB chưa có cột mới
+            var allEvents = await eventsQuery
+                .Select(e => new { e.Id, e.Status, e.StartDate })
+                .ToListAsync();
 
             var total      = allEvents.Count;
             var ongoing    = allEvents.Count(e => e.Status == "Ongoing");
@@ -54,6 +57,7 @@ namespace EventManager.Api.Controllers.CanBo
 
             var participants = await _context.Participants
                 .Where(p => eventIds.Contains(p.EventId))
+                .Select(p => new { p.EventId, p.Attended, p.RegisteredAt })
                 .ToListAsync();
 
             var totalParticipants   = participants.Count;

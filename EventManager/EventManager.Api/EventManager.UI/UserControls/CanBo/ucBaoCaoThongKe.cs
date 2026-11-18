@@ -15,7 +15,7 @@ namespace EventManager.UI.UserControls.CanBo
         public ucBaoCaoThongKe()
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
 
             this.Load   += ucBaoCaoThongKe_Load;
             this.Resize += ucBaoCaoThongKe_Resize;
@@ -64,11 +64,13 @@ namespace EventManager.UI.UserControls.CanBo
                     ? (DateTime?)dtpTo.Value.Date.AddDays(1).AddSeconds(-1)
                     : null;
 
-                var data = await _apiService.GetReportStatisticsAsync(from, to);
+                var (data, errorMsg) = await _apiService.GetReportStatisticsAsync(from, to);
 
                 if (data == null)
                 {
-                    lblStatus.Text = "Không thể tải dữ liệu.";
+                    lblStatus.Text = "Không thể tải dữ liệu. " + errorMsg;
+                    MessageBox.Show("Chi tiết lỗi:\n" + errorMsg, "Lỗi tải báo cáo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

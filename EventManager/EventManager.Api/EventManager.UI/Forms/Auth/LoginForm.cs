@@ -14,7 +14,7 @@ namespace EventManager.UI.Forms.Auth
         public LoginForm()
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
 
             // Nhấn phím Enter để tự động kích hoạt nút Đăng nhập
             this.AcceptButton = btnLogin;

@@ -21,7 +21,7 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucSuKienCuaToi(UserSession session)
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
             _session = session;
 
             cboFilter.Items.AddRange(new object[] { "Tất cả", "Đang đăng ký", "Đã hủy" });

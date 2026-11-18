@@ -29,7 +29,7 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucDanhGiaPhanHoi(UserSession session)
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _apiService = ApiService.Instance;
             _session = session;
 
             cboRating.Items.AddRange(RatingTexts);
