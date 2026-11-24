@@ -17,7 +17,8 @@ namespace EventManager.UI.Forms.SinhVien
             _session = session;
 
             // Hiển thị tên + chữ cái đầu làm avatar trên thanh trên cùng
-            string displayName = !string.IsNullOrWhiteSpace(_session?.FullName) ? _session.FullName : (_session?.Username ?? "Sinh viên");
+            // Hiển thị tên tài khoản (vd: hocsinh01), giống bên Cán bộ
+            string displayName = !string.IsNullOrWhiteSpace(_session?.Username) ? _session.Username : "Sinh viên";
             lblWelcome.Text = displayName;
             lblAvatarLetter.Text = displayName.Trim().Substring(0, 1).ToUpper();
             lblPageTitle.Text = $"Xin chào, {displayName} 👋";
