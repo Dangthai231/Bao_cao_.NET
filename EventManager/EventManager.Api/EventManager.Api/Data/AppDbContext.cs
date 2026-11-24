@@ -24,29 +24,29 @@ namespace EventManager.Api.Data
         {
             // ── Users ────────────────────────────────────────────────
             // PasswordHash được tạo bằng BCrypt.Net.BCrypt.HashPassword(plainText, workFactor:12)
-            // admin123   -> $2a$12$eduBLLdVXrxDMfKaRm9h3.tYCVdg4v5TuGXe4JFLVqUTwqjJLFrGi
-            // canbo123   -> $2a$12$UBMCNRsLXqdHnfG3oZH5oek3h6rJAR2RMIzU0E5VyNNklOWFMUMWa
-            // hocsinh123 -> $2a$12$9YmX4vRU5fPAkyqNTLcAuuBR3EqH7UGDopbqyVu.G.KKL7YlAooxK
+            // admin123   -> $2a$12$06ec83a6FYa/OaSsbkp1auURuujD92STc04xOF/ruCRLjztA8C8DS
+            // canbo123   -> $2a$12$frcv5fg3pnUypMRVnSqu0.uHKhgzYejBLDq1AXskLyR7j7StcXgja
+            // hocsinh123 -> $2a$12$xjVcCggI9gFAxp3BFYNArur.N7ydD22RiHbQJIi3ZN42X2Mm7M6Ha
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     Id = 1, Username = "admin", Role = "Admin",
                     Password     = string.Empty, // trường cũ, bỏ trống
-                    PasswordHash = "$2a$12$eduBLLdVXrxDMfKaRm9h3.tYCVdg4v5TuGXe4JFLVqUTwqjJLFrGi",
+                    PasswordHash = "$2a$12$06ec83a6FYa/OaSsbkp1auURuujD92STc04xOF/ruCRLjztA8C8DS",
                     FullName = "Quản trị viên"
                 },
                 new User
                 {
                     Id = 2, Username = "canbo01", Role = "CanBo",
                     Password     = string.Empty,
-                    PasswordHash = "$2a$12$UBMCNRsLXqdHnfG3oZH5oek3h6rJAR2RMIzU0E5VyNNklOWFMUMWa",
+                    PasswordHash = "$2a$12$frcv5fg3pnUypMRVnSqu0.uHKhgzYejBLDq1AXskLyR7j7StcXgja",
                     FullName = "Cán Bộ Nguyễn Thị Lan"
                 },
                 new User
                 {
                     Id = 3, Username = "hocsinh01", Role = "SinhVien",
                     Password     = string.Empty,
-                    PasswordHash = "$2a$12$9YmX4vRU5fPAkyqNTLcAuuBR3EqH7UGDopbqyVu.G.KKL7YlAooxK",
+                    PasswordHash = "$2a$12$xjVcCggI9gFAxp3BFYNArur.N7ydD22RiHbQJIi3ZN42X2Mm7M6Ha",
                     FullName = "Nguyễn Văn Sinh", StudentCode = "22810310001", ClassName = "D17CNPM1",
                     Email = "hocsinh01@epu.edu.vn", PhoneNumber = "0912345678",
                     DateOfBirth = new System.DateTime(2004, 5, 20)
