@@ -26,7 +26,7 @@ namespace EventManager.Api.Data
             // PasswordHash được tạo bằng BCrypt.Net.BCrypt.HashPassword(plainText, workFactor:12)
             // admin123   -> $2a$12$06ec83a6FYa/OaSsbkp1auURuujD92STc04xOF/ruCRLjztA8C8DS
             // canbo123   -> $2a$12$frcv5fg3pnUypMRVnSqu0.uHKhgzYejBLDq1AXskLyR7j7StcXgja
-            // hocsinh123 -> $2a$12$xjVcCggI9gFAxp3BFYNArur.N7ydD22RiHbQJIi3ZN42X2Mm7M6Ha
+            // hs123      -> $2a$12$HQk0CibOZnOcu6Ph5q7EYO2a1h6yKd.IO53/jVwYORigoiPMJ.ryO
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -46,7 +46,7 @@ namespace EventManager.Api.Data
                 {
                     Id = 3, Username = "hocsinh01", Role = "SinhVien",
                     Password     = string.Empty,
-                    PasswordHash = "$2a$12$xjVcCggI9gFAxp3BFYNArur.N7ydD22RiHbQJIi3ZN42X2Mm7M6Ha",
+                    PasswordHash = "$2a$12$HQk0CibOZnOcu6Ph5q7EYO2a1h6yKd.IO53/jVwYORigoiPMJ.ryO",
                     FullName = "Nguyễn Văn Sinh", StudentCode = "22810310001", ClassName = "D17CNPM1",
                     Email = "hocsinh01@epu.edu.vn", PhoneNumber = "0912345678",
                     DateOfBirth = new System.DateTime(2004, 5, 20)

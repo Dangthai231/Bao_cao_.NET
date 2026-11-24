@@ -5,7 +5,7 @@
 namespace EventManager.Api.Migrations
 {
     /// <summary>
-    /// Sửa mật khẩu mẫu: các PasswordHash cũ không khớp với admin123 / canbo123 / hocsinh123
+    /// Sửa mật khẩu mẫu: các PasswordHash cũ không khớp với admin123 / canbo123 / hs123
     /// nên không đăng nhập được. Chỉ cập nhật bảng Users.
     /// (EF có tự sinh thêm CreateTable cho cong_viec / su_kien / tai_khoan và cập nhật ngày giờ mẫu,
     /// nhưng các bảng đó đã có sẵn trong DB của nhóm nên đã bỏ đi để không bị lỗi.)
@@ -34,7 +34,7 @@ namespace EventManager.Api.Migrations
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "PasswordHash",
-                value: "$2a$12$xjVcCggI9gFAxp3BFYNArur.N7ydD22RiHbQJIi3ZN42X2Mm7M6Ha");
+                value: "$2a$12$HQk0CibOZnOcu6Ph5q7EYO2a1h6yKd.IO53/jVwYORigoiPMJ.ryO");
         }
 
         /// <inheritdoc />

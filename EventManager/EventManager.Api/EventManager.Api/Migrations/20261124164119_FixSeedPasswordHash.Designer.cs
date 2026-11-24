@@ -862,7 +862,7 @@ namespace EventManager.Api.Migrations
                             Email = "hocsinh01@epu.edu.vn",
                             FullName = "Nguyễn Văn Sinh",
                             Password = "",
-                            PasswordHash = "$2a$12$xjVcCggI9gFAxp3BFYNArur.N7ydD22RiHbQJIi3ZN42X2Mm7M6Ha",
+                            PasswordHash = "$2a$12$HQk0CibOZnOcu6Ph5q7EYO2a1h6yKd.IO53/jVwYORigoiPMJ.ryO",
                             PhoneNumber = "0912345678",
                             Role = "SinhVien",
                             StudentCode = "22810310001",
