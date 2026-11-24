@@ -29,6 +29,8 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucDanhGiaPhanHoi(UserSession session)
         {
             InitializeComponent();
+            SinhVienTheme.AttachCardBorder(grpForm, pnlGridCard);
+            SinhVienTheme.RoundButtons(6, btnSend, btnReset, btnEdit, btnDelete);
             _apiService = ApiService.Instance;
             _session = session;
 

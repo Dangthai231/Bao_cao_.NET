@@ -21,6 +21,8 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucTraCuuSuKien(UserSession session)
         {
             InitializeComponent();
+            SinhVienTheme.AttachCardBorder(pnlFilter, pnlGridCard);
+            SinhVienTheme.RoundButtons(6, btnSearch, btnClear, btnViewDetail, btnRegister);
             _apiService = ApiService.Instance;
             _session = session;
 
