@@ -19,6 +19,8 @@ namespace EventManager.Api.Data
         public DbSet<CongViec>    CongViecs    { get; set; }
         public DbSet<SuKien>      SuKiens      { get; set; }
         public DbSet<TaiKhoan>    TaiKhoans    { get; set; }
+        public DbSet<DangKySuKien> DangKySuKiens { get; set; }
+        public DbSet<SinhVien>    SinhViens    { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
