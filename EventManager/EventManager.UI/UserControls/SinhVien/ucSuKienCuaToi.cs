@@ -21,6 +21,10 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucSuKienCuaToi(UserSession session)
         {
             InitializeComponent();
+            SinhVienTheme.AttachCardBorder(cardTotal, cardUpcoming, cardAttended, cardAbsent, pnlGridCard);
+            SinhVienTheme.RoundButtons(6, btnRefresh, btnViewInfo, btnCancel);
+            foreach (var icon in new[] { lblTotalIcon, lblUpcomingIcon, lblAttendedIcon, lblAbsentIcon })
+                SinhVienTheme.MakeCircle(icon);
             _apiService = ApiService.Instance;
             _session = session;
 
@@ -84,10 +88,10 @@ namespace EventManager.UI.UserControls.SinhVien
         private void UpdateStatistics()
         {
             var active = _registrations.Where(r => r.ConfirmationStatus != "Đã hủy").ToList();
-            lblTotal.Text = $"Đang đăng ký: {active.Count}";
-            lblUpcoming.Text = $"Sắp diễn ra: {active.Count(r => r.EventStatus == "Sắp diễn ra")}";
-            lblAttended.Text = $"Đã tham gia: {active.Count(r => r.AttendanceStatus == "Đã điểm danh")}";
-            lblAbsent.Text = $"Vắng: {active.Count(r => r.AttendanceStatus == "Vắng")}";
+            lblTotal.Text = active.Count.ToString();
+            lblUpcoming.Text = active.Count(r => r.EventStatus == "Sắp diễn ra").ToString();
+            lblAttended.Text = active.Count(r => r.AttendanceStatus == "Đã điểm danh").ToString();
+            lblAbsent.Text = active.Count(r => r.AttendanceStatus == "Vắng").ToString();
         }
 
         // 1. Xem thông tin đăng ký

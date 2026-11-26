@@ -16,16 +16,23 @@ namespace EventManager.UI.Forms.SinhVien
             InitializeComponent();
             _session = session;
 
-            lblWelcome.Text = $"Xin chào,\n{(string.IsNullOrWhiteSpace(_session.FullName) ? _session.Username : _session.FullName)}";
+            // Hiển thị tên + chữ cái đầu làm avatar trên thanh trên cùng
+            // Hiển thị tên tài khoản (vd: hocsinh01), giống bên Cán bộ
+            string displayName = !string.IsNullOrWhiteSpace(_session?.Username) ? _session.Username : "Sinh viên";
+            lblWelcome.Text = displayName;
+            lblAvatarLetter.Text = displayName.Trim().Substring(0, 1).ToUpper();
+            lblPageTitle.Text = $"Xin chào, {displayName} 👋";
 
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(1150, 700);
-            this.MinimumSize = new Size(950, 550);
+            this.Size = new Size(1250, 750);
 
-            // Cố định nút Đăng xuất ở dưới cùng sidebar
-            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnLogout.Location = new Point(10, pnlSidebar.ClientSize.Height - btnLogout.Height - 15);
-            btnLogout.Width = pnlSidebar.ClientSize.Width - 20;
+            // Trang trí (bo góc nút menu, avatar tròn, đường kẻ dưới thanh trên)
+            SinhVienTheme.RoundButtons(8, btnEvents, btnMyRegistrations, btnFeedback, btnProfile, btnLogout);
+            SinhVienTheme.MakeCircle(pnlAvatar);
+            pnlTopNav.Paint += (s, e) =>
+            {
+                using var pen = new Pen(SinhVienTheme.Border, 1);
+                e.Graphics.DrawLine(pen, 0, pnlTopNav.Height - 1, pnlTopNav.Width, pnlTopNav.Height - 1);
+            };
 
             // Mở màn hình Tra cứu sự kiện mặc định
             LoadUserControl(new ucTraCuuSuKien(_session), btnEvents);
@@ -40,8 +47,11 @@ namespace EventManager.UI.Forms.SinhVien
 
             foreach (var btn in new[] { btnEvents, btnMyRegistrations, btnFeedback, btnProfile })
             {
-                btn.BackColor = btn == activeButton ? Color.FromArgb(37, 99, 235) : SystemColors.Control;
-                btn.ForeColor = btn == activeButton ? Color.White : SystemColors.ControlText;
+                bool active = btn == activeButton;
+                btn.BackColor = active ? SinhVienTheme.Primary : SinhVienTheme.Navy;
+                btn.ForeColor = active ? Color.White : SinhVienTheme.SidebarText;
+                btn.Font = new Font("Segoe UI", active ? 9.5F : 9.25F, active ? FontStyle.Bold : FontStyle.Regular);
+                btn.FlatAppearance.MouseOverBackColor = active ? SinhVienTheme.Primary : SinhVienTheme.NavyHover;
             }
         }
 
@@ -63,6 +73,12 @@ namespace EventManager.UI.Forms.SinhVien
         private void btnProfile_Click(object sender, EventArgs e)
         {
             LoadUserControl(new ucThongTinCaNhan(_session), btnProfile);
+        }
+
+        // Ẩn/hiện sidebar
+        private void btnHamburger_Click(object sender, EventArgs e)
+        {
+            pnlSidebar.Visible = !pnlSidebar.Visible;
         }
 
         private void btnLogout_Click(object sender, EventArgs e)

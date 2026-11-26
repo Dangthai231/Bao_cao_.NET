@@ -22,6 +22,65 @@ namespace EventManager.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("EventManager.Api.Models.CongViec", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("HanChot")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("han_chot");
+
+                    b.Property<string>("MaCv")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ma_cv");
+
+                    b.Property<string>("MoTa")
+                        .HasColumnType("longtext")
+                        .HasColumnName("mo_ta");
+
+                    b.Property<string>("MucDoUuTien")
+                        .HasColumnType("longtext")
+                        .HasColumnName("muc_do_uu_tien");
+
+                    b.Property<DateTime?>("NgayTao")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("ngay_tao");
+
+                    b.Property<string>("NhanSu")
+                        .HasColumnType("longtext")
+                        .HasColumnName("nhan_su");
+
+                    b.Property<long?>("SuKienId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("su_kien_id");
+
+                    b.Property<string>("TenCongViec")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("ten_cong_viec");
+
+                    b.Property<string>("TenSuKien")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ten_su_kien");
+
+                    b.Property<int>("TienDo")
+                        .HasColumnType("int")
+                        .HasColumnName("tien_do");
+
+                    b.Property<string>("TrangThai")
+                        .HasColumnType("longtext")
+                        .HasColumnName("trang_thai");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("cong_viec");
+                });
+
             modelBuilder.Entity("EventManager.Api.Models.Document", b =>
                 {
                     b.Property<int>("Id")
@@ -64,7 +123,7 @@ namespace EventManager.Api.Migrations
                             FileName = "chuong_trinh.pdf",
                             FileSize = "",
                             FileType = "",
-                            UploadDate = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(1486),
+                            UploadDate = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(5472),
                             UploadedBy = ""
                         });
                 });
@@ -312,7 +371,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(232),
+                            CreatedAt = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(4405),
                             EventId = 10,
                             Status = "Pending",
                             Title = "Chuẩn bị tài liệu"
@@ -320,7 +379,7 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(967),
+                            CreatedAt = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(5025),
                             EventId = 10,
                             Status = "Completed",
                             Title = "Gửi thư mời"
@@ -375,8 +434,8 @@ namespace EventManager.Api.Migrations
                             CreatedById = 2,
                             Message = "Nhắc nhở sự kiện T10",
                             NotificationCode = "",
-                            SendDate = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(2812),
-                            SentAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(2815),
+                            SendDate = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(6371),
+                            SentAt = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(6372),
                             Status = "",
                             TargetAudience = "",
                             Title = ""
@@ -651,24 +710,80 @@ namespace EventManager.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(3923),
+                            CreatedAt = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(7111),
                             IsCompleted = true,
                             Title = "Báo cáo Q1"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(4454),
+                            CreatedAt = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(7575),
                             IsCompleted = true,
                             Title = "Báo cáo Q2"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 11, 6, 22, 14, 24, 367, DateTimeKind.Local).AddTicks(4456),
+                            CreatedAt = new DateTime(2026, 11, 24, 23, 41, 18, 928, DateTimeKind.Local).AddTicks(7576),
                             IsCompleted = false,
                             Title = "Báo cáo Q3"
                         });
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.SuKien", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("DiaDiem")
+                        .HasColumnType("longtext")
+                        .HasColumnName("dia_diem");
+
+                    b.Property<string>("MaSuKien")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ma_su_kien");
+
+                    b.Property<string>("TenSuKien")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ten_su_kien");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("su_kien");
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.TaiKhoan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("HoTen")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ho_ten");
+
+                    b.Property<string>("MaSo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ma_so");
+
+                    b.Property<string>("TenDangNhap")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ten_dang_nhap");
+
+                    b.Property<string>("VaiTro")
+                        .HasColumnType("longtext")
+                        .HasColumnName("vai_tro");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tai_khoan");
                 });
 
             modelBuilder.Entity("EventManager.Api.Models.User", b =>
@@ -723,7 +838,7 @@ namespace EventManager.Api.Migrations
                             Id = 1,
                             FullName = "Quản trị viên",
                             Password = "",
-                            PasswordHash = "$2a$12$eduBLLdVXrxDMfKaRm9h3.tYCVdg4v5TuGXe4JFLVqUTwqjJLFrGi",
+                            PasswordHash = "$2a$12$06ec83a6FYa/OaSsbkp1auURuujD92STc04xOF/ruCRLjztA8C8DS",
                             Role = "Admin",
                             Username = "admin"
                         },
@@ -732,7 +847,7 @@ namespace EventManager.Api.Migrations
                             Id = 2,
                             FullName = "Cán Bộ Nguyễn Thị Lan",
                             Password = "",
-                            PasswordHash = "$2a$12$UBMCNRsLXqdHnfG3oZH5oek3h6rJAR2RMIzU0E5VyNNklOWFMUMWa",
+                            PasswordHash = "$2a$12$frcv5fg3pnUypMRVnSqu0.uHKhgzYejBLDq1AXskLyR7j7StcXgja",
                             Role = "CanBo",
                             Username = "canbo01"
                         },
@@ -744,7 +859,7 @@ namespace EventManager.Api.Migrations
                             Email = "hocsinh01@epu.edu.vn",
                             FullName = "Nguyễn Văn Sinh",
                             Password = "",
-                            PasswordHash = "$2a$12$9YmX4vRU5fPAkyqNTLcAuuBR3EqH7UGDopbqyVu.G.KKL7YlAooxK",
+                            PasswordHash = "$2a$12$HQk0CibOZnOcu6Ph5q7EYO2a1h6yKd.IO53/jVwYORigoiPMJ.ryO",
                             PhoneNumber = "0912345678",
                             Role = "SinhVien",
                             StudentCode = "22810310001",

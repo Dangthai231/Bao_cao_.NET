@@ -18,6 +18,9 @@ namespace EventManager.UI.UserControls.SinhVien
         public ucThongTinCaNhan(UserSession session)
         {
             InitializeComponent();
+            SinhVienTheme.AttachCardBorder(grpInfo, grpPassword);
+            SinhVienTheme.RoundButtons(6, btnEdit, btnSave, btnCancelEdit);
+            SinhVienTheme.MakeCircle(pnlAvatar);
             _apiService = ApiService.Instance;
             _session = session;
 
@@ -58,6 +61,13 @@ namespace EventManager.UI.UserControls.SinhVien
             txtClassName.Text = _profile.ClassName;
             txtEmail.Text = _profile.Email;
             txtPhone.Text = _profile.PhoneNumber;
+
+            // Thẻ tóm tắt phía trên: avatar chữ cái đầu + tên + MSV/Lớp
+            string name = string.IsNullOrWhiteSpace(_profile.FullName) ? _profile.Username : _profile.FullName;
+            lblProfileName.Text = name;
+            lblAvatarLetter.Text = string.IsNullOrWhiteSpace(name) ? "S" : name.Trim().Substring(0, 1).ToUpper();
+            lblProfileSub.Text = $"MSV: {(string.IsNullOrWhiteSpace(_profile.StudentCode) ? "---" : _profile.StudentCode)}  •  " +
+                                 $"Lớp: {(string.IsNullOrWhiteSpace(_profile.ClassName) ? "---" : _profile.ClassName)}";
 
             dtpDateOfBirth.Checked = _profile.DateOfBirth.HasValue;
             if (_profile.DateOfBirth.HasValue)
