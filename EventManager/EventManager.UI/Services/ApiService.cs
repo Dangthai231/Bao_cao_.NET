@@ -186,6 +186,68 @@ namespace EventManager.UI.Services
         // ==========================================
         // CHỨC NĂNG QUẢN LÝ NGƯỜI THAM GIA
         // ==========================================
+        public async Task<List<ParticipantEventDto>> GetParticipantEventsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("api/canbo/participants/events");
+                if (response.IsSuccessStatusCode)
+                    return await response.Content.ReadFromJsonAsync<List<ParticipantEventDto>>() ?? new List<ParticipantEventDto>();
+            }
+            catch { }
+            return new List<ParticipantEventDto>();
+        }
+
+        public async Task<List<ParticipantItemDto>> GetParticipantsByEventAsync(long? suKienId, string? search = null, string? diemDanh = null)
+        {
+            try
+            {
+                var parts = new List<string>();
+                if (suKienId.HasValue && suKienId.Value > 0)
+                    parts.Add($"suKienId={suKienId.Value}");
+                if (!string.IsNullOrWhiteSpace(search))
+                    parts.Add($"search={Uri.EscapeDataString(search.Trim())}");
+                if (!string.IsNullOrWhiteSpace(diemDanh) && diemDanh != "Tất cả")
+                    parts.Add($"diemDanh={Uri.EscapeDataString(diemDanh.Trim())}");
+
+                string url = "api/canbo/participants/by-event" + (parts.Count > 0 ? "?" + string.Join("&", parts) : "");
+                var response = await _httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                    return await response.Content.ReadFromJsonAsync<List<ParticipantItemDto>>() ?? new List<ParticipantItemDto>();
+            }
+            catch { }
+            return new List<ParticipantItemDto>();
+        }
+
+        public async Task<(bool Success, string Message)> UpdateParticipantAttendanceSingleAsync(long dangKyId, string diemDanh)
+        {
+            try
+            {
+                var body = new UpdateAttendanceItemDto { DangKyId = dangKyId, DiemDanh = diemDanh };
+                var response = await _httpClient.PutAsJsonAsync($"api/canbo/participants/attendance/{dangKyId}", body);
+                string msg = await ReadMessageAsync(response);
+                return (response.IsSuccessStatusCode, msg);
+            }
+            catch (Exception ex)
+            {
+                return (false, "Lỗi kết nối: " + ex.Message);
+            }
+        }
+
+        public async Task<(bool Success, string Message, int UpdatedCount)> UpdateParticipantAttendanceBatchAsync(List<UpdateAttendanceItemDto> updates)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync("api/canbo/participants/attendance/batch", updates);
+                string msg = await ReadMessageAsync(response);
+                return (response.IsSuccessStatusCode, msg, updates.Count);
+            }
+            catch (Exception ex)
+            {
+                return (false, "Lỗi kết nối: " + ex.Message, 0);
+            }
+        }
+
         public async Task<List<ParticipantDto>> GetParticipantsAsync()
         {
             var response = await _httpClient.GetAsync("api/canbo/participants");
