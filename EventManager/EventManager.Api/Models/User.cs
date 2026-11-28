@@ -19,6 +19,7 @@ namespace EventManager.Api.Models
 
         // Quyền của user: "Admin", "CanBo", hoặc "SinhVien"
         public string Role { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = true;
 
         // ── Thông tin cá nhân ──
         public string? FullName { get; set; }

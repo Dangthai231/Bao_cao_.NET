@@ -62,7 +62,7 @@ namespace EventManager.Api.Controllers.Auth
 #pragma warning restore CS0618
             }
 
-            if (!passwordValid)
+            if (!passwordValid || !user.IsActive)
             {
                 return Unauthorized(new { message = "Sai tài khoản hoặc mật khẩu." });
             }

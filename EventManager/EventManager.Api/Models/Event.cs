@@ -19,6 +19,7 @@ namespace EventManager.Api.Models
         public DateTime? EndDate { get; set; }
 
         public int CreatedById { get; set; }
+        public int? ManagerId { get; set; }
 
         // Thông tin hiển thị cho sinh viên khi tra cứu / xem chi tiết sự kiện
         public string? Description { get; set; }

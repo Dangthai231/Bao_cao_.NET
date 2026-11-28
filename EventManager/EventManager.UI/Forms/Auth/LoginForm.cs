@@ -1,4 +1,5 @@
 using EventManager.UI.Services;
+using EventManager.UI.Forms.Admin;
 using EventManager.UI.Forms.Canbo;
 using EventManager.UI.Forms.SinhVien;
 using System;
@@ -62,7 +63,7 @@ namespace EventManager.UI.Forms.Auth
 
                     if (string.Equals(session.Role, "Admin", StringComparison.OrdinalIgnoreCase))
                     {
-                        // mainForm = new AdminDashboard(session);
+                        mainForm = new AdminDashboard(session);
                     }
                     else if (string.Equals(session.Role, "CanBo", StringComparison.OrdinalIgnoreCase) || 
                              string.Equals(session.Role, "CAN_BO", StringComparison.OrdinalIgnoreCase))

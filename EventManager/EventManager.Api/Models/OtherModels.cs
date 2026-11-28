@@ -23,6 +23,9 @@ namespace EventManager.Api.Models
         public DateTime EndDate { get; set; }
         public string Location { get; set; } = string.Empty;
         public decimal Budget { get; set; }
+        public string Status { get; set; } = "Chờ duyệt";
+        public string? ReviewNote { get; set; }
+        public int? EventId { get; set; }
     }
 
     public class Notification
@@ -34,6 +37,7 @@ namespace EventManager.Api.Models
         public string? TargetAudience { get; set; } = string.Empty;
         public DateTime SendDate { get; set; } = DateTime.Now;
         public string? Status { get; set; } = string.Empty;
+        public string? ReviewNote { get; set; }
         public string Message { get; set; } = string.Empty;
         public int CreatedById { get; set; } = 2;
         public DateTime SentAt { get; set; } = DateTime.Now;

@@ -4,6 +4,7 @@ using EventManager.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,23 +118,29 @@ namespace EventManager.Api.Controllers.Admin
 
             // 1. Công việc của phân hệ Cán bộ (bảng cong_viec).
             //    Bảng này gắn với bảng su_kien riêng, nên ghép với sự kiện theo tên sự kiện.
-            var legacyIds = await _context.SuKiens
-                .Where(s => s.TenSuKien == ev.Title)
-                .Select(s => s.Id)
-                .ToListAsync();
-            var congViecs = await _context.CongViecs.AsNoTracking()
-                .Where(c => c.TenSuKien == ev.Title || (c.SuKienId != null && legacyIds.Contains(c.SuKienId.Value)))
-                .ToListAsync();
-            foreach (var c in congViecs)
+            bool legacyTasksUnavailable = false;
+            try
             {
-                tasks.Add(new AdminTaskDto
+                var congViecs = await _context.CongViecs.AsNoTracking()
+                    .Where(c => c.TenSuKien == ev.Title || _context.SuKiens.Any(
+                        s => s.Id == c.SuKienId && s.TenSuKien == ev.Title))
+                    .Select(c => new { c.TenCongViec, c.TrangThai, c.NhanSu, c.TienDo, c.HanChot })
+                    .ToListAsync();
+                foreach (var c in congViecs)
                 {
-                    Title = c.TenCongViec,
-                    Status = c.TrangThai,
-                    Owner = c.NhanSu,
-                    Progress = Math.Clamp(c.TienDo, 0, 100),
-                    Deadline = c.HanChot
-                });
+                    tasks.Add(new AdminTaskDto
+                    {
+                        Title = c.TenCongViec,
+                        Status = c.TrangThai,
+                        Owner = c.NhanSu,
+                        Progress = Math.Clamp(c.TienDo, 0, 100),
+                        Deadline = c.HanChot
+                    });
+                }
+            }
+            catch (MySqlException ex) when (ex.Number == 1146)
+            {
+                legacyTasksUnavailable = true;
             }
 
             // 2. Công việc cũ (bảng Tasks) gắn trực tiếp với EventId
@@ -153,6 +160,7 @@ namespace EventManager.Api.Controllers.Admin
                 EventId = ev.Id,
                 EventTitle = ev.Title,
                 Tasks = tasks,
+                LegacyTasksUnavailable = legacyTasksUnavailable,
                 Progress = tasks.Count == 0 ? 0 : (int)Math.Round(tasks.Average(t => t.Progress))
             };
             return Ok(result);
