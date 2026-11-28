@@ -133,6 +133,7 @@ namespace EventManager.Api.DTOs
         public int EventId { get; set; }
         public string EventTitle { get; set; } = string.Empty;
         public int Progress { get; set; }
+        public bool LegacyTasksUnavailable { get; set; }
         public List<AdminTaskDto> Tasks { get; set; } = new List<AdminTaskDto>();
     }
 
@@ -166,6 +167,7 @@ namespace EventManager.Api.DTOs
 
     public class AdminDashboardDto
     {
+        public List<string> Permissions { get; set; } = new List<string>();
         public int TotalAccounts { get; set; }
         public int TotalEvents { get; set; }
         public int UpcomingCount { get; set; }

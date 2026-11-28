@@ -45,6 +45,11 @@ namespace EventManager.UI.UserControls.Admin
                 var data = await _apiService.GetAdminDashboardAsync();
                 if (IsDisposed || version != _loadVersion) return;
 
+                Dashboard?.SetPermissions(data.Permissions);
+                btnXemSuKien.Enabled = btnKeHoachChoDuyet.Enabled = data.Permissions.Contains("Quản lý sự kiện");
+                btnThongBaoChoDuyet.Enabled = data.Permissions.Contains("Quản lý thông báo");
+                btnYeuCauDoiThongTin.Enabled = data.Permissions.Contains("Quản lý tài khoản");
+
                 lblTongTaiKhoan.Text = "Tổng tài khoản\r\n" + data.TotalAccounts;
                 lblTongSuKien.Text = "Tổng sự kiện\r\n" + data.TotalEvents;
                 lblSapDienRa.Text = "Sắp diễn ra\r\n" + data.UpcomingCount;

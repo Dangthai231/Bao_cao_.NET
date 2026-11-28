@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EventManager.UI.Services
 {
-    public class ApiService
+    public partial class ApiService
     {
         // ── Singleton: toàn bộ app dùng chung 1 HttpClient + 1 token ──
         private static ApiService _instance;

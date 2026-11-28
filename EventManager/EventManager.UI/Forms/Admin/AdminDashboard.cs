@@ -12,7 +12,15 @@ namespace EventManager.UI.Forms.Admin
     public partial class AdminDashboard : Form
     {
         private readonly ApiService _apiService = ApiService.Instance;
-        private readonly UserSession _session;
+        internal void SetPermissions(IReadOnlyCollection<string> permissions)
+        {
+            btnSuKien.Enabled = permissions.Contains("Quản lý sự kiện");
+            btnThongBao.Enabled = permissions.Contains("Quản lý thông báo");
+            btnTaiKhoan.Enabled = permissions.Contains("Quản lý tài khoản");
+            btnPhanQuyen.Enabled = permissions.Contains("Phân quyền");
+            btnBaoCao.Enabled = permissions.Contains("Báo cáo");
+            btnTimKiemChung.Enabled = btnTaiKhoan.Enabled || btnSuKien.Enabled || btnThongBao.Enabled;
+        }
 
         public AdminDashboard()
         {
@@ -49,14 +57,14 @@ namespace EventManager.UI.Forms.Admin
             if (!string.Equals(session.Role, "Admin", StringComparison.OrdinalIgnoreCase))
                 throw new UnauthorizedAccessException("Tài khoản không có quyền Admin.");
 
-            _session = session;
+            SetPermissions(Array.Empty<string>());
             lblTaiKhoan.Text = session.FullName ?? session.Username;
 
             btnTongQuan.Click += (s, e) => ShowPage(btnTongQuan, new TongQuanPanel());
             btnSuKien.Click += (s, e) => ShowPage(btnSuKien, new QuanLySuKienPanel());
             btnThongBao.Click += (s, e) => ShowPage(btnThongBao, new QuanLyThongBaoPanel());
             btnTaiKhoan.Click += (s, e) => ShowPage(btnTaiKhoan, new QuanLyTaiKhoanPanel());
-            btnPhanQuyen.Click += (s, e) => ShowPage(btnPhanQuyen, new PhanQuyenPanel(_session.UserId));
+            btnPhanQuyen.Click += (s, e) => ShowPage(btnPhanQuyen, new PhanQuyenPanel(session.UserId));
             btnBaoCao.Click += (s, e) => ShowPage(btnBaoCao, new BaoCaoPanel());
             btnCaiDat.Click += (s, e) => ShowPage(btnCaiDat, new CaiDatPanel());
 
@@ -69,6 +77,7 @@ namespace EventManager.UI.Forms.Admin
         // ─── Điều hướng (được gọi từ màn hình Tổng quan) ─────────────
         public void OpenEvents(bool plansTab)
         {
+            if (!btnSuKien.Enabled) return;
             var page = new QuanLySuKienPanel();
             page.ShowPlansTab = plansTab;
             ShowPage(btnSuKien, page);
@@ -76,6 +85,7 @@ namespace EventManager.UI.Forms.Admin
 
         public void OpenNotifications(bool pendingOnly)
         {
+            if (!btnThongBao.Enabled) return;
             var page = new QuanLyThongBaoPanel();
             page.ShowPendingTab = pendingOnly;
             ShowPage(btnThongBao, page);
@@ -83,6 +93,7 @@ namespace EventManager.UI.Forms.Admin
 
         public void OpenAccounts(bool requestsTab, string keyword = "")
         {
+            if (!btnTaiKhoan.Enabled) return;
             var page = new QuanLyTaiKhoanPanel();
             page.ShowRequestsTab = requestsTab;
             page.InitialKeyword = keyword;
@@ -121,11 +132,11 @@ namespace EventManager.UI.Forms.Admin
             btnTimKiemChung.Text = "…";
             try
             {
-                var accounts = _apiService.GetAccountsAsync();
-                var events = _apiService.GetAdminEventsAsync(keyword);
-                var notifications = _apiService.GetAdminNotificationsAsync(keyword);
-                var plans = _apiService.GetPlansAsync();
-                var requests = _apiService.GetChangeRequestsAsync();
+                var accounts = btnTaiKhoan.Enabled ? _apiService.GetAccountsAsync() : Task.FromResult(new List<AdminAccountDto>());
+                var events = btnSuKien.Enabled ? _apiService.GetAdminEventsAsync(keyword) : Task.FromResult(new List<AdminEventDto>());
+                var notifications = btnThongBao.Enabled ? _apiService.GetAdminNotificationsAsync(keyword) : Task.FromResult(new List<AdminNotificationDto>());
+                var plans = btnSuKien.Enabled ? _apiService.GetPlansAsync() : Task.FromResult(new List<AdminPlanDto>());
+                var requests = btnTaiKhoan.Enabled ? _apiService.GetChangeRequestsAsync() : Task.FromResult(new List<AdminChangeRequestDto>());
                 await Task.WhenAll(accounts, events, notifications, plans, requests);
                 if (IsDisposed || Disposing)
                     return;
@@ -155,7 +166,7 @@ namespace EventManager.UI.Forms.Admin
                 if (!IsDisposed && !Disposing)
                 {
                     btnTimKiemChung.Text = "Tìm";
-                    btnTimKiemChung.Enabled = true;
+                    btnTimKiemChung.Enabled = btnTaiKhoan.Enabled || btnSuKien.Enabled || btnThongBao.Enabled;
                 }
             }
         }

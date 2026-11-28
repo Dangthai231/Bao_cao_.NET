@@ -130,6 +130,8 @@ namespace EventManager.Api.Controllers.Admin
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return Missing();
+            if (user.Role == AdminHelper.RoleAdmin && !await IsFullAdminAsync())
+                return StatusCode(403, new { message = "Chỉ Admin toàn quyền được quản lý tài khoản Admin." });
 
             if (string.IsNullOrWhiteSpace(request.FullName))
                 return Invalid("Họ tên không được để trống.");

@@ -22,8 +22,27 @@ namespace EventManager.Api.Data
         public DbSet<DangKySuKien> DangKySuKiens { get; set; }
         public DbSet<SinhVien>    SinhViens    { get; set; }
 
+        public DbSet<AdminPermission> AdminPermissions { get; set; }
+        public DbSet<ProfileChangeRequest> ProfileChangeRequests { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().Property(u => u.IsActive).HasDefaultValue(true).HasSentinel(true);
+
+            modelBuilder.Entity<AdminPermission>(entity =>
+            {
+                entity.Property(p => p.Permission).HasMaxLength(191);
+                entity.HasIndex(p => new { p.UserId, p.Permission }).IsUnique();
+                entity.HasOne<User>().WithMany().HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<ProfileChangeRequest>()
+                .HasOne<User>().WithMany().HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Event>()
+                .HasOne<User>().WithMany().HasForeignKey(e => e.ManagerId).OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Plan>()
+                .HasOne<Event>().WithMany().HasForeignKey(p => p.EventId).OnDelete(DeleteBehavior.SetNull);
+
             // ── Users ────────────────────────────────────────────────
             // PasswordHash được tạo bằng BCrypt.Net.BCrypt.HashPassword(plainText, workFactor:12)
             // admin123   -> $2a$12$06ec83a6FYa/OaSsbkp1auURuujD92STc04xOF/ruCRLjztA8C8DS
@@ -117,19 +136,19 @@ namespace EventManager.Api.Data
 
             // ── Tasks, Documents, Notifications, Reports (tối giản) ──
             modelBuilder.Entity<EventTask>().HasData(
-                new EventTask { Id = 1, Title = "Chuẩn bị tài liệu", Status = "Pending",   EventId = 10 },
-                new EventTask { Id = 2, Title = "Gửi thư mời",       Status = "Completed", EventId = 10 }
+                new EventTask { Id = 1, Title = "Chuẩn bị tài liệu", Status = "Pending",   EventId = 10, CreatedAt = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(4405) },
+                new EventTask { Id = 2, Title = "Gửi thư mời",       Status = "Completed", EventId = 10, CreatedAt = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(5025) }
             );
             modelBuilder.Entity<Document>().HasData(
-                new Document { Id = 1, FileName = "chuong_trinh.pdf", EventId = 1 }
+                new Document { Id = 1, FileName = "chuong_trinh.pdf", EventId = 1, UploadDate = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(5472) }
             );
             modelBuilder.Entity<Notification>().HasData(
-                new Notification { Id = 1, Message = "Nhắc nhở sự kiện T10", CreatedById = 2 }
+                new Notification { Id = 1, Message = "Nhắc nhở sự kiện T10", CreatedById = 2, SendDate = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(6371), SentAt = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(6372) }
             );
             modelBuilder.Entity<Report>().HasData(
-                new Report { Id = 1, Title = "Báo cáo Q1", IsCompleted = true },
-                new Report { Id = 2, Title = "Báo cáo Q2", IsCompleted = true },
-                new Report { Id = 3, Title = "Báo cáo Q3", IsCompleted = false }
+                new Report { Id = 1, Title = "Báo cáo Q1", IsCompleted = true, CreatedAt = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(7111) },
+                new Report { Id = 2, Title = "Báo cáo Q2", IsCompleted = true, CreatedAt = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(7575) },
+                new Report { Id = 3, Title = "Báo cáo Q3", IsCompleted = false, CreatedAt = new System.DateTime(2026, 11, 24, 23, 41, 18, 928, System.DateTimeKind.Local).AddTicks(7576) }
             );
         }
     }

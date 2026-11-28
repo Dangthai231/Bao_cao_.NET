@@ -34,8 +34,14 @@ namespace EventManager.Api.Controllers.Admin
                 .Take(10)
                 .ToListAsync();
 
+            var permissions = await IsFullAdminAsync()
+                ? AdminHelper.PermissionCatalog
+                : await _context.AdminPermissions.AsNoTracking().Where(p => p.UserId == CurrentUserId)
+                    .Select(p => p.Permission).ToListAsync();
+
             var dto = new AdminDashboardDto
             {
+                Permissions = permissions,
                 TotalAccounts = await _context.Users.CountAsync(),
                 TotalEvents = await _context.Events.CountAsync(),
                 UpcomingCount = await _context.Events.CountAsync(e => e.StartDate >= now && e.Status == "Ongoing"),

@@ -22,6 +22,30 @@ namespace EventManager.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("EventManager.Api.Models.AdminPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Permission")
+                        .IsRequired()
+                        .HasMaxLength(191)
+                        .HasColumnType("varchar(191)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Permission")
+                        .IsUnique();
+
+                    b.ToTable("AdminPermissions");
+                });
+
             modelBuilder.Entity("EventManager.Api.Models.CongViec", b =>
                 {
                     b.Property<long>("Id")
@@ -79,6 +103,37 @@ namespace EventManager.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("cong_viec");
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.DangKySuKien", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("NgayDangKy")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("ngay_dang_ky");
+
+                    b.Property<long>("SuKienId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("su_kien_id");
+
+                    b.Property<string>("TenDangNhap")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("ten_dang_nhap");
+
+                    b.Property<string>("TrangThai")
+                        .HasColumnType("longtext")
+                        .HasColumnName("trang_thai");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("dang_ky_su_kien");
                 });
 
             modelBuilder.Entity("EventManager.Api.Models.Document", b =>
@@ -148,6 +203,9 @@ namespace EventManager.Api.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MaxParticipants")
                         .HasColumnType("int");
 
@@ -163,6 +221,8 @@ namespace EventManager.Api.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Events");
 
@@ -405,6 +465,9 @@ namespace EventManager.Api.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("NotificationCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ReviewNote")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("SendDate")
@@ -664,6 +727,9 @@ namespace EventManager.Api.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -676,12 +742,61 @@ namespace EventManager.Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ReviewNote")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("EventId");
+
                     b.ToTable("Plans");
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.ProfileChangeRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClassName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Evidence")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ReviewNote")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProfileChangeRequests");
                 });
 
             modelBuilder.Entity("EventManager.Api.Models.Report", b =>
@@ -730,6 +845,49 @@ namespace EventManager.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EventManager.Api.Models.SinhVien", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext")
+                        .HasColumnName("email");
+
+                    b.Property<string>("HoTen")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ho_ten");
+
+                    b.Property<string>("Lop")
+                        .HasColumnType("longtext")
+                        .HasColumnName("lop");
+
+                    b.Property<string>("MaSinhVien")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ma_sinh_vien");
+
+                    b.Property<DateTime?>("NgaySinh")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("ngay_sinh");
+
+                    b.Property<string>("SoDienThoai")
+                        .HasColumnType("longtext")
+                        .HasColumnName("so_dien_thoai");
+
+                    b.Property<string>("TenDangNhap")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("ten_dang_nhap");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("sinh_vien");
+                });
+
             modelBuilder.Entity("EventManager.Api.Models.SuKien", b =>
                 {
                     b.Property<long>("Id")
@@ -747,9 +905,29 @@ namespace EventManager.Api.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("ma_su_kien");
 
+                    b.Property<string>("MoTa")
+                        .HasColumnType("longtext")
+                        .HasColumnName("mo_ta");
+
+                    b.Property<int?>("SoLuongToiDa")
+                        .HasColumnType("int")
+                        .HasColumnName("so_luong_toi_da");
+
                     b.Property<string>("TenSuKien")
                         .HasColumnType("longtext")
                         .HasColumnName("ten_su_kien");
+
+                    b.Property<DateTime?>("ThoiGianBatDau")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("thoi_gian_bat_dau");
+
+                    b.Property<DateTime?>("ThoiGianKetThuc")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("thoi_gian_ket_thuc");
+
+                    b.Property<string>("TrangThai")
+                        .HasColumnType("longtext")
+                        .HasColumnName("trang_thai");
 
                     b.HasKey("Id");
 
@@ -806,6 +984,11 @@ namespace EventManager.Api.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -837,6 +1020,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 1,
                             FullName = "Quản trị viên",
+                            IsActive = true,
                             Password = "",
                             PasswordHash = "$2a$12$06ec83a6FYa/OaSsbkp1auURuujD92STc04xOF/ruCRLjztA8C8DS",
                             Role = "Admin",
@@ -846,6 +1030,7 @@ namespace EventManager.Api.Migrations
                         {
                             Id = 2,
                             FullName = "Cán Bộ Nguyễn Thị Lan",
+                            IsActive = true,
                             Password = "",
                             PasswordHash = "$2a$12$frcv5fg3pnUypMRVnSqu0.uHKhgzYejBLDq1AXskLyR7j7StcXgja",
                             Role = "CanBo",
@@ -858,6 +1043,7 @@ namespace EventManager.Api.Migrations
                             DateOfBirth = new DateTime(2004, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "hocsinh01@epu.edu.vn",
                             FullName = "Nguyễn Văn Sinh",
+                            IsActive = true,
                             Password = "",
                             PasswordHash = "$2a$12$HQk0CibOZnOcu6Ph5q7EYO2a1h6yKd.IO53/jVwYORigoiPMJ.ryO",
                             PhoneNumber = "0912345678",
@@ -865,6 +1051,40 @@ namespace EventManager.Api.Migrations
                             StudentCode = "22810310001",
                             Username = "hocsinh01"
                         });
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.AdminPermission", b =>
+                {
+                    b.HasOne("EventManager.Api.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.Event", b =>
+                {
+                    b.HasOne("EventManager.Api.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.Plan", b =>
+                {
+                    b.HasOne("EventManager.Api.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.SetNull);
+                });
+
+            modelBuilder.Entity("EventManager.Api.Models.ProfileChangeRequest", b =>
+                {
+                    b.HasOne("EventManager.Api.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

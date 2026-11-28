@@ -373,6 +373,9 @@ namespace EventManager.UI.UserControls.Admin
             try
             {
                 var progress = await _apiService.GetEventProgressAsync(ev.Id);
+                if (progress.LegacyTasksUnavailable)
+                    MessageBox.Show(this, "Thiếu bảng công việc hoặc sự kiện của Cán bộ. Tiến độ chỉ tính theo dữ liệu trong bảng Tasks.",
+                        "Theo dõi tiến độ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 using (var form = new TheoDoiSuKienForm(progress))
                 {
                     form.ShowDialog(this);
